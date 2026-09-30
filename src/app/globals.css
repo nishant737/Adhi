@@ -2,25 +2,156 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #111111;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-sans: var(--font-inter-tight);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --animate-hero-reveal: hero-reveal 2400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-service-progress: service-progress linear both;
+  --animate-stamp: stamp 700ms cubic-bezier(0.34, 1.4, 0.64, 1) 1500ms both;
+  --animate-passport-in: passport-in 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-stamp-jolt: stamp-jolt 450ms ease-out 1850ms both;
+  --animate-holo: holo 3.2s ease-in-out 400ms infinite;
+  --animate-mrz: mrz 700ms steps(28, end) both;
+  --animate-bubble: bubble 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-dash: dash 1.2s linear infinite;
+  --animate-sound-bar: sound-bar 900ms ease-in-out infinite;
+
+  @keyframes service-progress {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  @keyframes stamp {
+    0% { opacity: 0; transform: scale(2.2) rotate(-2deg); filter: blur(2px); }
+    55% { opacity: 1; transform: scale(0.9) rotate(-14deg); filter: blur(0); }
+    100% { opacity: 1; transform: scale(1) rotate(-12deg); }
+  }
+  @keyframes passport-in {
+    from { opacity: 0; transform: translateY(28px) rotate(-8deg) scale(0.94); }
+    to { opacity: 1; transform: translateY(0) rotate(-3deg) scale(1); }
+  }
+  @keyframes stamp-jolt {
+    0%, 100% { transform: translate(0, 0); }
+    30% { transform: translate(1px, 3px); }
+    60% { transform: translate(-1px, -1px); }
+  }
+  @keyframes holo {
+    0% { transform: translateX(0); }
+    55%, 100% { transform: translateX(200%); }
+  }
+  @keyframes mrz {
+    from { clip-path: inset(0 100% 0 0); }
+    to { clip-path: inset(0 0 0 0); }
+  }
+  @keyframes bubble {
+    from { opacity: 0; transform: translateY(10px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes sound-bar {
+    0%, 100% { height: 30%; }
+    50% { height: 100%; }
+  }
+  @keyframes dash {
+    to { stroke-dashoffset: -16; }
+  }
+
+  --animate-fade-up: fade-up 1000ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-down: fade-down 1000ms cubic-bezier(0.22, 1, 0.36, 1) 900ms both;
+
+  @keyframes hero-reveal {
+    from {
+      opacity: 0;
+      transform: scale(1.08);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-down {
+    from {
+      opacity: 0;
+      transform: translateY(-12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter-tight), system-ui, sans-serif;
+}
+
+/* Hero depth effect while scrolling: slight zoom + darken as the next section covers it.
+   Uses scroll-driven animations; browsers without support simply keep the plain pinned hero. */
+@keyframes hero-scroll {
+  to {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes hero-shade {
+  to {
+    opacity: 0.45;
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-scroll,
+    .hero-shade {
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+    }
+    .hero-scroll {
+      animation-name: hero-scroll;
+    }
+    .hero-shade {
+      animation-name: hero-shade;
+    }
+  }
+}
+
+/* Lenis smooth scrolling (copied from lenis/dist/lenis.css, which the package doesn't export) */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+
+.lenis [data-lenis-prevent],
+.lenis [data-lenis-prevent-wheel],
+.lenis [data-lenis-prevent-touch],
+.lenis [data-lenis-prevent-vertical],
+.lenis [data-lenis-prevent-horizontal] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }
