@@ -6,18 +6,18 @@ import Globe from "./Globe";
 const steps = [
   {
     title: "Based in Mangaluru",
-    body: "A local team you can meet in person, dedicated to guiding Indian nurses who want to take their careers abroad.",
+    body: "A local team you can meet in person, guiding job seekers from India who want to build a career abroad.",
     icon: PinIcon,
   },
   {
-    title: "Training for Nurses",
-    body: "We train Indian nurses to get ready for work overseas, so they start their new role prepared and confident.",
-    icon: CapIcon,
+    title: "Jobs Across the World",
+    body: "We match candidates from every profession with employers overseas, and support them through visa and emigration.",
+    icon: BriefcaseIcon,
   },
   {
-    title: "Careers in Germany",
-    body: "We help nurses find job opportunities abroad, with a special focus on hospitals and care facilities in Germany.",
-    icon: HospitalIcon,
+    title: "Training for Your Destination",
+    body: "Language and job-readiness training to prepare you for work and life in your new country, before you fly.",
+    icon: CapIcon,
   },
 ];
 
@@ -89,17 +89,17 @@ export default function About() {
                   About Us
                 </span>
                 <h2 className="mt-4 text-[1.9rem] font-medium leading-[1.05] tracking-[-0.03em] sm:mt-6 sm:text-5xl lg:text-[3.25rem]">
-                  Helping Indian Nurses
+                  Connecting Indian Talent
                   <span className="mt-1 block text-[1.5rem] text-[#7ea6ff] sm:mt-2 sm:text-4xl lg:text-[2.4rem]">
-                    Build Careers in Germany
+                    With Jobs Worldwide
                   </span>
                 </h2>
               </div>
 
               <p className="mx-auto max-w-md text-[0.85rem] leading-relaxed lg:mx-0 lg:max-w-lg text-white/70 sm:text-lg lg:pb-2 max-lg:[@media(max-height:680px)]:hidden">
-                Aadhi Consulting Services is a Mangaluru-based consultancy for nurses who want to
-                work abroad. We train Indian nurses and connect them with opportunities overseas —
-                mainly in Germany.
+                Aadhi Consulting Services is a Mangaluru-based job placement consultancy. We help
+                people from India find the right job abroad — from the first conversation to the
+                visa — with training to prepare you for working abroad.
               </p>
             </div>
 
@@ -207,11 +207,11 @@ function CapIcon({ className }: IconProps) {
   );
 }
 
-function HospitalIcon({ className }: IconProps) {
+function BriefcaseIcon({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <rect x="4" y="3" width="16" height="18" rx="2" />
-      <path d="M12 7v6M9 10h6M9 21v-3h6v3" />
+      <rect x="3" y="7" width="18" height="13" rx="2" />
+      <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18" />
     </svg>
   );
 }

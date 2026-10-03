@@ -13,17 +13,17 @@ const faculty: Person[] = [
 
 export default function Faculty() {
   return (
-    <section id="faculty" className="relative z-10 bg-[#f4f7fc] text-[#0d2142]">
+    <section id="team" className="relative z-10 bg-[#f4f7fc] text-[#0d2142]">
       <div className="mx-auto max-w-7xl px-5 py-20 sm:px-10 sm:py-28">
         {/* Header */}
         <Reveal className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-medium shadow-sm sm:px-5 sm:py-2.5 sm:text-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-[#3f74b5]" />
-              Our Faculty
+              Our Team
             </span>
             <h2 className="mt-5 max-w-3xl text-[2.1rem] font-medium leading-[1.02] tracking-[-0.04em] sm:mt-6 sm:text-6xl lg:text-[4.25rem]">
-              Learn from people who <span className="text-[#3f74b5]">know the way.</span>
+              The people behind <span className="text-[#3f74b5]">your placement.</span>
             </h2>
           </div>
         </Reveal>

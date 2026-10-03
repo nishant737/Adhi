@@ -8,17 +8,17 @@ const reviews = [
   {
     quote: "Your client's review goes here — a few sentences about their experience with Aadhi and where they are working now.",
     name: "Client Name",
-    detail: "Staff Nurse · Germany",
+    detail: "Placed in Germany",
   },
   {
-    quote: "Your client's review goes here — what the German training and placement support meant for them.",
+    quote: "Your client's review goes here — how the team helped them find the right job overseas.",
     name: "Client Name",
-    detail: "Registered Nurse · Israel",
+    detail: "Placed in the UAE",
   },
   {
     quote: "Your client's review goes here — how the team guided them through the visa and emigration process.",
     name: "Client Name",
-    detail: "Staff Nurse · India",
+    detail: "Placed in India",
   },
 ];
 
@@ -67,7 +67,7 @@ export default function Reviews() {
               Client Reviews
             </span>
             <h2 className="mt-5 max-w-3xl text-[2.1rem] font-medium leading-[1.02] tracking-[-0.04em] sm:mt-6 sm:text-6xl lg:text-[4.25rem]">
-              Stories from nurses <span className="text-[#7ea6ff]">we&apos;ve guided.</span>
+              Stories from people <span className="text-[#7ea6ff]">we&apos;ve placed.</span>
             </h2>
           </div>
 

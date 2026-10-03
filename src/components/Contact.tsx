@@ -4,7 +4,7 @@ import { useState, type FormEvent } from "react";
 import { contact, telHref } from "@/data/contact";
 import Reveal from "./Reveal";
 
-const interests = ["Job Placement", "Visa & Emigration", "German Training"];
+const interests = ["Job Abroad", "Job in India", "Visa & Emigration", "Language Training"];
 
 export default function Contact() {
   const [interest, setInterest] = useState(interests[0]);
@@ -57,7 +57,7 @@ export default function Contact() {
               Contact Us
             </span>
             <h2 className="mt-5 text-[2.1rem] font-medium leading-[1.02] tracking-[-0.04em] sm:mt-6 sm:text-6xl lg:text-[4rem]">
-              Let&apos;s plan your <span className="block text-[#3f74b5]">move together.</span>
+              Let&apos;s find your <span className="block text-[#3f74b5]">next job together.</span>
             </h2>
             <p className="mt-6 max-w-md text-[0.95rem] leading-relaxed text-[#0d2142]/60 sm:text-lg">
               Tell us a little about yourself and we&apos;ll get back to you with the next steps.
@@ -141,7 +141,7 @@ export default function Contact() {
                     <textarea
                       name="message"
                       rows={3}
-                      placeholder="Tell us about your qualification and goals"
+                      placeholder="Your profession, experience and preferred country"
                       className="mt-2 w-full resize-none rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-white placeholder:text-white/35 outline-none transition-colors focus:border-white/60 focus:bg-white/10"
                     />
                   </label>

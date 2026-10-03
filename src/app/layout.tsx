@@ -9,9 +9,9 @@ const interTight = Inter_Tight({
 });
 
 export const metadata: Metadata = {
-  title: "Aadhi Consulting Services — Nursing Careers in Germany",
+  title: "Aadhi Consulting Services — Overseas Job Placement",
   description:
-    "Mangaluru-based consultancy that trains Indian nurses in German and guides them to hospital jobs in Germany — language training, recognition, interviews, visa and relocation.",
+    "Mangaluru-based job placement consultancy helping people from India find jobs abroad — with visa and emigration support, plus German training and placement for Germany.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

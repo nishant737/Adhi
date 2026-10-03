@@ -7,13 +7,13 @@ const links = [
   { label: "Home", href: "/" },
   { label: "About", href: "#about" },
   { label: "Services", href: "#services" },
-  { label: "Faculty", href: "#faculty" },
+  { label: "Team", href: "#team" },
   { label: "Reviews", href: "#reviews" },
   { label: "FAQ", href: "#faq" },
   { label: "Contact", href: "#contact" },
 ];
 
-const services = ["Job Placement", "Visa & Emigration", "German Language Training"];
+const services = ["Overseas Job Placement", "Domestic Job Placement", "Visa & Emigration", "Language & Job Training"];
 
 export default function Footer() {
   return (
@@ -26,7 +26,7 @@ export default function Footer() {
               <Image src="/images/logo.png" alt="Aadhi Consulting Services" width={654} height={300} className="h-10 w-auto" />
             </Link>
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/60 md:mt-6">
-              A Mangaluru-based consultancy helping Indian nurses build careers at home and abroad — mainly in Germany.
+              A Mangaluru-based job placement consultancy helping people from India build careers abroad — with visa support and training for life abroad.
             </p>
             <a
               href={`https://wa.me/${contact.whatsapp}`}

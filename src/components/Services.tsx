@@ -23,20 +23,20 @@ const subscribeReducedMotion = (onChange: () => void) => {
 const services: { title: string; body: string; tags?: string[]; visual: () => ReactNode }[] = [
   {
     title: "Job Placement",
-    body: "Helping nurses find the right role — at home in India or overseas.",
-    tags: ["Domestic", "International"],
+    body: "Finding the right job abroad for every profession — with domestic roles in India too.",
+    tags: ["International", "Domestic", "All professions"],
     visual: () => <JobVisual />,
   },
   {
     title: "Visa & Emigration",
-    body: "Guidance through visa stamping and the emigration process, step by step.",
+    body: "Step-by-step help with visa stamping and the emigration process, for every destination.",
     tags: ["Visa stamping", "Emigration process"],
     visual: () => <VisaVisual />,
   },
   {
-    title: "German Training",
-    body: "German language training designed for healthcare professionals.",
-    tags: ["For healthcare professionals"],
+    title: "Language Training",
+    body: "Language and job-readiness training for your destination country — such as German for Germany.",
+    tags: ["Language training", "Job readiness", "Destination prep"],
     visual: () => <LanguageVisual />,
   },
 ];
@@ -125,7 +125,7 @@ export default function Services() {
               Our Services
             </span>
             <h2 className="mt-5 max-w-3xl text-[2.1rem] font-medium leading-[1.02] tracking-[-0.04em] sm:mt-6 sm:text-6xl lg:mt-5 lg:text-[3.5rem]">
-              From the classroom to your <span className="text-[#3f74b5]">first shift abroad.</span>
+              From your first call to your <span className="text-[#3f74b5]">first day abroad.</span>
             </h2>
           </div>
         </Reveal>
@@ -295,10 +295,13 @@ function PreviewCard({ index, active, compact = false }: { index: number; active
 }
 
 function JobVisual() {
+  // Example listings across professions and countries
   const jobs = [
-    { type: 0, role: "Staff Nurse", place: "Hospital · India", flag: <IndiaFlag /> },
-    { type: 1, role: "Registered Nurse", place: "Hospital · Germany", flag: <GermanyFlag /> },
-    { type: 1, role: "Staff Nurse", place: "Hospital · Israel", flag: <IsraelFlag /> },
+    { type: 1, role: "Registered Nurse", place: "Healthcare · Germany", flag: <GermanyFlag />, field: "Healthcare" },
+    { type: 1, role: "Electrician", place: "Construction · UAE", flag: <UAEFlag />, field: "Technical" },
+    { type: 0, role: "Sales Executive", place: "Retail · India", flag: <IndiaFlag />, field: "Sales" },
+    { type: 1, role: "Caregiver", place: "Elderly care · Israel", flag: <IsraelFlag />, field: "Care" },
+    { type: 1, role: "Hotel Staff", place: "Hospitality · UK", flag: <UKFlag />, field: "Hospitality" },
   ];
   const tabs = ["Domestic", "International"];
   const stages = ["Applied", "Interview", "Placed"];
@@ -368,7 +371,7 @@ function JobVisual() {
           </div>
 
           <div className="mt-3 flex gap-1.5 sm:mt-4">
-            {["Full-time", "Nursing"].map((tag) => (
+            {["Full-time", current.field].map((tag) => (
               <span key={tag} className="rounded-full bg-[#eef2fa] px-2.5 py-1 text-[0.65rem] font-medium text-[#0d2142]/70">
                 {tag}
               </span>
@@ -416,13 +419,23 @@ function JobVisual() {
   );
 }
 
+// The visa sample shows a different destination each time the preview opens
+const visaCountries = [
+  { name: "GERMANY", code: "DEU", flag: () => <GermanyFlag /> },
+  { name: "UAE", code: "ARE", flag: () => <UAEFlag /> },
+  { name: "ISRAEL", code: "ISR", flag: () => <IsraelFlag /> },
+  { name: "UNITED KINGDOM", code: "GBR", flag: () => <UKFlag /> },
+];
+let visaTurn = 0;
+
 function VisaVisual() {
+  const [country] = useState(() => visaCountries[visaTurn++ % visaCountries.length]);
   const fields = [
-    { label: "Gültig für / Valid for", value: "DEUTSCHLAND" },
-    { label: "Art / Type", value: "D · NATIONAL" },
-    { label: "Name / Surname", value: "SAMPLE" },
-    { label: "Vorname / Given name", value: "NURSE" },
-    { label: "Bemerkungen / Remarks", value: "EMPLOYMENT", wide: true },
+    { label: "Valid for", value: country.name },
+    { label: "Type", value: "WORK" },
+    { label: "Surname", value: "SAMPLE" },
+    { label: "Given name", value: "CANDIDATE" },
+    { label: "Remarks", value: "EMPLOYMENT", wide: true },
   ];
   return (
     <div className="relative mx-auto w-[min(92%,21rem)] lg:scale-[1.3]">
@@ -448,10 +461,10 @@ function VisaVisual() {
 
             <div className="relative flex items-center justify-between">
               <div className="flex items-center gap-1.5">
-                <span className="block h-3 w-[1.1rem] overflow-hidden rounded-[2px]"><GermanyFlag /></span>
-                <span className="text-[0.55rem] font-bold uppercase tracking-[0.18em] sm:text-[0.6rem]">Visum · Visa</span>
+                <span className="block h-3 w-[1.1rem] overflow-hidden rounded-[2px]">{country.flag()}</span>
+                <span className="text-[0.55rem] font-bold uppercase tracking-[0.18em] sm:text-[0.6rem]">Visa</span>
               </div>
-              <span className="flex h-5 w-5 items-center justify-center rounded bg-[#1d2b4a] text-[0.6rem] font-bold text-white">D</span>
+              <span className="flex h-5 w-5 items-center justify-center rounded bg-[#1d2b4a] text-[0.6rem] font-bold text-white">W</span>
             </div>
 
             <div className="relative mt-2 grid grid-cols-[2.6rem_1fr] gap-2.5 sm:mt-2.5 sm:grid-cols-[3rem_1fr]">
@@ -475,7 +488,7 @@ function VisaVisual() {
 
             {/* Machine-readable zone prints line by line */}
             <div className="relative mt-2 space-y-0.5 border-t border-[#1d2b4a]/10 pt-1.5 font-mono text-[0.46rem] leading-none tracking-[0.12em] text-[#1d2b4a]/75 sm:text-[0.5rem]">
-              <p className="animate-mrz overflow-hidden whitespace-nowrap" style={{ animationDelay: "600ms" }}>VDDEUSAMPLE&lt;&lt;NURSE&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</p>
+              <p className="animate-mrz overflow-hidden whitespace-nowrap" style={{ animationDelay: "600ms" }}>{`VW${country.code}SAMPLE<<CANDIDATE<<<<<<<`}</p>
               <p className="animate-mrz overflow-hidden whitespace-nowrap" style={{ animationDelay: "900ms" }}>X000000&lt;&lt;0IND0000000F0000000&lt;&lt;</p>
             </div>
           </div>
@@ -511,14 +524,14 @@ function speakGerman(text: string, onEnd: () => void) {
 
 function LanguageVisual() {
   const words = [
-    { de: "die Pflegekraft", en: "the nurse" },
-    { de: "der Blutdruck", en: "blood pressure" },
-    { de: "die Schmerzen", en: "pain" },
+    { de: "die Arbeit", en: "work" },
+    { de: "der Vertrag", en: "the contract" },
+    { de: "die Kollegin", en: "the colleague" },
   ];
   const phrases = [
     { de: "Guten Morgen!", en: "Good morning!" },
-    { de: "Wie fühlen Sie sich heute?", en: "How are you feeling today?" },
-    { de: "Haben Sie Schmerzen?", en: "Are you in pain?" },
+    { de: "Ich freue mich auf die Arbeit.", en: "I'm looking forward to the work." },
+    { de: "Wann beginnt meine Schicht?", en: "When does my shift start?" },
   ];
 
   // Cycle through the words; each card shows German, then flips to English
@@ -569,7 +582,7 @@ function LanguageVisual() {
         </span>
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline justify-between">
-            <p className="text-xs font-medium sm:text-sm">Lektion · Im Krankenhaus</p>
+            <p className="text-xs font-medium sm:text-sm">Lektion · Am Arbeitsplatz</p>
             <p className="text-[0.6rem] tabular-nums text-white/50 sm:text-xs">{index + 1}/{words.length}</p>
           </div>
           <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-white/10">
@@ -702,6 +715,29 @@ function IsraelFlag() {
         <path d="M15 6.4 18.1 11.8H11.9Z" />
         <path d="M15 13.6 11.9 8.2H18.1Z" />
       </g>
+    </svg>
+  );
+}
+
+function UAEFlag() {
+  return (
+    <svg viewBox="0 0 30 20" className="h-full w-full" preserveAspectRatio="none" aria-hidden>
+      <rect width="30" height="6.67" fill="#00732f" />
+      <rect y="6.67" width="30" height="6.67" fill="#fff" />
+      <rect y="13.33" width="30" height="6.67" fill="#000" />
+      <rect width="8" height="20" fill="#ff0000" />
+    </svg>
+  );
+}
+
+function UKFlag() {
+  return (
+    <svg viewBox="0 0 60 30" className="h-full w-full" preserveAspectRatio="none" aria-hidden>
+      <rect width="60" height="30" fill="#012169" />
+      <path d="M0 0l60 30M60 0L0 30" stroke="#fff" strokeWidth="6" />
+      <path d="M0 0l60 30M60 0L0 30" stroke="#C8102E" strokeWidth="2" />
+      <path d="M30 0v30M0 15h60" stroke="#fff" strokeWidth="10" />
+      <path d="M30 0v30M0 15h60" stroke="#C8102E" strokeWidth="6" />
     </svg>
   );
 }

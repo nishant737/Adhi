@@ -5,20 +5,24 @@ import Reveal from "./Reveal";
 
 const faqs = [
   {
-    q: "What services does Aadhi Consulting offer?",
-    a: "We help nurses with job placement — both domestic (within India) and international — guidance through visa stamping and the emigration process, and German language training designed for healthcare professionals.",
+    q: "What does Aadhi Consulting do?",
+    a: "We're a job placement consultancy. We help people from India find jobs abroad — and in India — and guide them through visa stamping and the emigration process. We also offer language and job-readiness training to prepare candidates for their destination country.",
   },
   {
-    q: "Which countries do you work with?",
-    a: "We currently work with India, Israel and Germany, with a special focus on nursing careers in Germany.",
+    q: "Which professions do you place?",
+    a: "All kinds — we work with candidates across professions and skill levels. Tell us about your qualification and experience, and we'll look for roles that match.",
   },
   {
-    q: "Do I need to learn German to work as a nurse in Germany?",
-    a: "Yes — nurses in Germany need to speak German to work with patients and colleagues. That's why we offer German language training built specifically for healthcare professionals.",
+    q: "Which countries can I work in?",
+    a: "We place candidates in several countries abroad, including Germany, Israel, the UAE and the UK, as well as roles within India. Ask us about the country you have in mind.",
   },
   {
     q: "Do you help with the visa and emigration process?",
     a: "Yes. We guide you step by step through visa stamping and the emigration process, so you know what to do at every stage.",
+  },
+  {
+    q: "Do you offer language training?",
+    a: "Yes. Depending on where you're going, you may need the local language for your job or visa. We offer language and job-readiness training for your destination country — for example, German for those planning to work in Germany.",
   },
   {
     q: "Where is Aadhi Consulting based?",
@@ -26,7 +30,7 @@ const faqs = [
   },
   {
     q: "How do I get started?",
-    a: "Just send us your details using the contact form below, or call or message us. We'll talk through your goals and the next steps with you.",
+    a: "Send us your details using the contact form below, or call or message us. We'll talk through your goals and the next steps with you.",
   },
 ];
 

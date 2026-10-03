@@ -5,12 +5,12 @@ import HeroVideo from "./HeroVideo";
 
 const POSTER = "/videos/hero-poster.jpg";
 
-// Placeholder figures: replace with Aadhi's real numbers before going live.
+// What Aadhi does, at a glance (swap in real numbers, e.g. "1,000+ placed", once the client confirms them)
 const stats = [
-  { value: "500+", label: "Nurses Trained" },
-  { value: "200+", label: "Placed in German Hospitals" },
-  { value: "A1–B2", label: "German Language Training" },
-  { value: "100%", label: "Visa & Recognition Support" },
+  { value: "Abroad", label: "Overseas Job Placement" },
+  { value: "All", label: "Professions & Skill Levels" },
+  { value: "Visa", label: "& Emigration Support" },
+  { value: "India", label: "Domestic Jobs Too" },
 ];
 
 // Staggered entrance that starts after the video has faded in
@@ -54,7 +54,7 @@ export default function Hero() {
               className="motion-safe:animate-fade-up flex items-center gap-2 text-[0.65rem] font-medium tracking-[0.08em] text-[#0d2142]/80 sm:text-sm"
             >
               <span className="h-1.5 w-1.5 rounded-full bg-[#79a7d8]" />
-              NURSING CAREERS IN GERMANY · MANGALURU
+              OVERSEAS JOB PLACEMENT · MANGALURU
             </p>
 
             {/* Heading sits in the lower strip, clear of faces; buttons in a row underneath */}
@@ -64,10 +64,10 @@ export default function Hero() {
                 className="motion-safe:animate-fade-up mt-2 text-[2rem] font-semibold leading-[0.92] tracking-[-0.05em] sm:mt-4 sm:text-6xl lg:text-[3.5rem] xl:text-[3.75rem]"
               >
                 <span className="block">
-                  YOUR NURSING <br className="lg:hidden" />
-                  CAREER
+                  YOUR CAREER <br className="lg:hidden" />
+                  ABROAD
                 </span>
-                <span className="block text-[#3f74b5]">IN GERMANY</span>
+                <span className="block text-[#3f74b5]">STARTS HERE</span>
               </h1>
 
               <div style={reveal(1350)} className="motion-safe:animate-fade-up mt-5 flex gap-2 sm:mt-6 sm:gap-3">
@@ -82,7 +82,7 @@ export default function Hero() {
                   href="#services"
                   className="inline-flex min-w-0 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-full sm:flex-none border border-[#0d2142]/15 bg-white px-3 py-2.5 text-[0.65rem] sm:px-5 sm:py-3 sm:text-xs lg:border-0 lg:bg-white/90 font-medium tracking-tight text-[#0d2142] shadow-sm backdrop-blur transition-colors hover:bg-white sm:px-7 sm:py-4 sm:text-sm"
                 >
-                  EXPLORE PROGRAMS
+                  OUR SERVICES
                   <ArrowIcon />
                 </Link>
               </div>
@@ -91,8 +91,8 @@ export default function Hero() {
                 style={reveal(1500)}
                 className="motion-safe:animate-fade-up mt-4 max-w-md text-[0.8rem] leading-relaxed sm:mt-5 text-[#0d2142]/75 sm:text-base lg:max-w-none lg:text-[1.05rem]"
               >
-                We train Indian nurses and help them build careers in hospitals abroad, mainly in
-                Germany.
+                We connect job seekers from India with trusted employers overseas — across
+                professions and countries.
               </p>
             </div>
           </div>

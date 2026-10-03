@@ -2,20 +2,15 @@
 
 import { geoDistance, geoGraticule10, geoInterpolate, geoOrthographic, geoPath } from "d3-geo";
 import type { GeoPermissibleObjects } from "d3-geo";
-import type { Feature, LineString } from "geojson";
+import type { LineString } from "geojson";
 import type { GeometryCollection, Topology } from "topojson-specification";
 import { useEffect, useRef, useState } from "react";
+import { MANGALURU, destinations, type LabelSide } from "@/data/destinations";
 
-const GERMANY_CENTER: [number, number] = [10.45, 51.17];
-const MANGALURU: [number, number] = [74.86, 12.91];
-const EARTH_RADIUS_KM = 6371;
-// Straight-line ("as the crow flies") distance to the centre of Germany, rounded to 50 km
-const DISTANCE_KM = Math.round((geoDistance(MANGALURU, GERMANY_CENTER) * EARTH_RADIUS_KM) / 50) * 50;
-const DISTANCE_TEXT = DISTANCE_KM.toLocaleString("en-IN");
-
-// Midpoint of the route; each city sits 32° from it, so a zoom of ~1.45 keeps both (and their labels) in view
-const FOCUS = geoInterpolate(MANGALURU, GERMANY_CENTER)(0.5) as [number, number];
-const ROUTE_ZOOM = 1.45; // first zoom step: turns to the route and fits both cities
+// Centre of Mangaluru + all destinations; the first zoom step turns here and fits every route in view
+const FOCUS: [number, number] = [36, 32];
+const ROUTE_ZOOM = 1.25;
+const DESTINATION_NAMES = destinations.map((d) => d.name).join(", ");
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 4;
 
@@ -37,7 +32,6 @@ export default function Globe({ className = "" }: { className?: string }) {
     if (!canvas || !ctx) return;
 
     let land: GeoPermissibleObjects | null = null;
-    let germany: Feature | null = null;
     let frame = 0;
     let visible = true;
     let cancelled = false;
@@ -66,12 +60,11 @@ export default function Globe({ className = "" }: { className?: string }) {
     const projection = geoOrthographic().precision(0.5);
     const path = geoPath(projection, ctx);
     const graticule = geoGraticule10();
-    const interpolate = geoInterpolate(MANGALURU, GERMANY_CENTER);
-    const arc: LineString = {
-      type: "LineString",
-      coordinates: Array.from({ length: 64 }, (_, i) => interpolate(i / 63)),
-    };
-    const midpoint = FOCUS;
+    // One route from Mangaluru to each destination
+    const arcs: LineString[] = destinations.map((d) => {
+      const interpolate = geoInterpolate(MANGALURU, d.coords);
+      return { type: "LineString", coordinates: Array.from({ length: 48 }, (_, i) => interpolate(i / 47)) };
+    });
 
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -81,30 +74,10 @@ export default function Globe({ className = "" }: { className?: string }) {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
-    const label = (text: string, x: number, y: number, weight: number, pill = false) => {
-      const fontSize = Math.max(11, size * 0.032);
-      ctx.font = `${weight} ${fontSize}px ${fontFamily}`;
-      const width = ctx.measureText(text).width;
-      // Keep labels inside the canvas: flip to the left of the point near the right edge
-      const left = Math.max(4, x + 12 + width > size - 4 ? x - 12 - width : x + 12);
-      if (pill) {
-        const h = fontSize + 10;
-        ctx.beginPath();
-        ctx.roundRect(left - 8, y - h / 2 - 1, width + 16, h, h / 2);
-        ctx.fillStyle = "rgba(11, 26, 51, 0.85)";
-        ctx.fill();
-        ctx.strokeStyle = "rgba(126, 166, 255, 0.5)";
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
-      ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
-      ctx.fillText(text, left, y + 4);
-    };
-
     const isFacing = (coords: [number, number], center: [number, number]) =>
       geoDistance(coords, center) < Math.PI / 2 - 0.05;
 
-    const drawPoint = (coords: [number, number], center: [number, number], text: string, bold = false) => {
+    const drawPoint = (coords: [number, number], center: [number, number], text: string, side: LabelSide, bold = false) => {
       if (!isFacing(coords, center)) return;
       const p = projection(coords);
       if (!p || Math.hypot(p[0] - size / 2, p[1] - size / 2) > size / 2 - 4) return;
@@ -117,7 +90,24 @@ export default function Globe({ className = "" }: { className?: string }) {
       ctx.strokeStyle = "rgba(255, 255, 255, 0.35)";
       ctx.lineWidth = 1;
       ctx.stroke();
-      label(text, p[0], p[1], bold ? 600 : 500);
+
+      // Label on the chosen side of the dot, with a soft dark halo so it stays readable over routes
+      const fontSize = Math.max(10, size * 0.03);
+      ctx.font = `${bold ? 600 : 500} ${fontSize}px ${fontFamily}`;
+      const w = ctx.measureText(text).width;
+      const gap = 11;
+      let x = p[0] + gap;
+      let y = p[1] + fontSize * 0.35;
+      if (side === "left") x = p[0] - gap - w;
+      if (side === "above") { x = p[0] - w / 2; y = p[1] - gap; }
+      if (side === "below") { x = p[0] - w / 2; y = p[1] + gap + fontSize * 0.7; }
+      x = Math.min(size - w - 4, Math.max(4, x));
+      ctx.lineJoin = "round";
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = "rgba(11, 26, 51, 0.85)";
+      ctx.strokeText(text, x, y);
+      ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
+      ctx.fillText(text, x, y);
     };
 
     const draw = () => {
@@ -160,31 +150,17 @@ export default function Globe({ className = "" }: { className?: string }) {
         ctx.stroke();
       }
 
-      if (germany) {
-        ctx.save();
-        ctx.beginPath();
-        path(germany);
-        ctx.shadowColor = "rgba(126, 166, 255, 0.9)";
-        ctx.shadowBlur = 18;
-        ctx.fillStyle = "#7ea6ff";
-        ctx.fill();
-        ctx.restore();
-        ctx.beginPath();
-        path(germany);
-        ctx.strokeStyle = "#ffffff";
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
-
-      // Moving dashed route from Mangaluru to Germany
+      // Moving dashed routes from Mangaluru to every destination
       ctx.save();
-      ctx.beginPath();
-      path(arc);
       ctx.setLineDash([4, 6]);
       ctx.lineDashOffset = -dash;
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
-      ctx.lineWidth = 1.4;
-      ctx.stroke();
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.75)";
+      ctx.lineWidth = 1.3;
+      arcs.forEach((arc) => {
+        ctx.beginPath();
+        path(arc);
+        ctx.stroke();
+      });
       ctx.restore();
 
       ctx.restore();
@@ -199,16 +175,8 @@ export default function Globe({ className = "" }: { className?: string }) {
 
       // Points and labels go on top of the round window so they're never cut off at its edge
       const center: [number, number] = [-view.lambda, -view.phi];
-      drawPoint(MANGALURU, center, "Mangaluru");
-      drawPoint(GERMANY_CENTER, center, "Germany", true);
-
-      // Distance tag on the middle of the route
-      if (isFacing(midpoint, center)) {
-        const p = projection(midpoint);
-        if (p && Math.hypot(p[0] - size / 2, p[1] - size / 2) < lens - 4) {
-          label(`≈ ${DISTANCE_TEXT} km`, p[0], p[1], 600, true);
-        }
-      }
+      destinations.forEach((d) => drawPoint(d.coords, center, d.name, d.side));
+      drawPoint(MANGALURU, center, "Mangaluru", "below", true);
     };
 
     // Shortest signed difference between two longitudes
@@ -220,7 +188,7 @@ export default function Globe({ className = "" }: { className?: string }) {
       const ease = 1 - Math.exp(-dt * 5);
 
       if (autoRotate && !dragging && !flying) {
-        // Slow down while the route is near the front, speed up elsewhere
+        // Slow down while the routes are near the front, speed up elsewhere
         const offset = geoDistance([FOCUS[0], 0], [-target.lambda, 0]) / Math.PI;
         const t = Math.min(1, offset * 2.2);
         const smooth = t * t * (3 - 2 * t);
@@ -276,7 +244,7 @@ export default function Globe({ className = "" }: { className?: string }) {
       zoomBy: (factor) => {
         const zoomedOut = target.zoom <= MIN_ZOOM + 0.01;
         if (factor > 1 && zoomedOut) {
-          // First zoom-in turns to the route so both cities and the distance are in view
+          // First zoom-in turns to the routes so every destination is in view
           autoRotate = false;
           flying = true;
           target.lambda = -FOCUS[0];
@@ -297,15 +265,12 @@ export default function Globe({ className = "" }: { className?: string }) {
     draw();
 
     // Map data loads after first paint so it never blocks the page
-    Promise.all([import("world-atlas/land-110m.json"), import("topojson-client"), import("@/data/germany.json")]).then(
-      ([landTopo, topojson, de]) => {
-        if (cancelled) return;
-        const topo = landTopo.default as unknown as Topology<{ land: GeometryCollection }>;
-        land = topojson.feature(topo, topo.objects.land);
-        germany = de.default as Feature;
-        draw();
-      },
-    );
+    Promise.all([import("world-atlas/land-110m.json"), import("topojson-client")]).then(([landTopo, topojson]) => {
+      if (cancelled) return;
+      const topo = landTopo.default as unknown as Topology<{ land: GeometryCollection }>;
+      land = topojson.feature(topo, topo.objects.land);
+      draw();
+    });
 
     // Only animate while the globe is on screen
     const io = new IntersectionObserver(([entry]) => {
@@ -342,7 +307,7 @@ export default function Globe({ className = "" }: { className?: string }) {
       <canvas
         ref={canvasRef}
         role="img"
-        aria-label={`Globe showing the route from Mangaluru to Germany, about ${DISTANCE_TEXT} km`}
+        aria-label={`Globe showing routes from Mangaluru to ${DESTINATION_NAMES}`}
         className="mx-auto block aspect-square w-full max-w-[min(190px,20svh)] sm:max-w-[min(360px,38vh)] cursor-grab touch-pan-y select-none"
       />
 
@@ -362,7 +327,7 @@ export default function Globe({ className = "" }: { className?: string }) {
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
           <path d="M9 11V6a1.5 1.5 0 0 1 3 0v4m0-1a1.5 1.5 0 0 1 3 0v2m0-1a1.5 1.5 0 0 1 3 0v4a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-2.7L4 14a1.5 1.5 0 0 1 2.4-1.8L9 15" />
         </svg>
-        Drag to rotate · zoom in to see the route
+        Drag to rotate · zoom in to see the routes
       </p>
     </div>
   );
