@@ -23,7 +23,7 @@ const subscribeReducedMotion = (onChange: () => void) => {
 const services: { title: string; body: string; tags?: string[]; visual: () => ReactNode }[] = [
   {
     title: "Job Placement",
-    body: "Finding the right job abroad for every profession — with domestic roles in India too.",
+    body: "Finding the right job abroad for every profession, with domestic roles in India too.",
     tags: ["International", "Domestic", "All professions"],
     visual: () => <JobVisual />,
   },
@@ -35,7 +35,7 @@ const services: { title: string; body: string; tags?: string[]; visual: () => Re
   },
   {
     title: "Language Training",
-    body: "Language and job-readiness training for your destination country — such as German for Germany.",
+    body: "Language and job-readiness training for your destination country, such as German for Germany.",
     tags: ["Language training", "Job readiness", "Destination prep"],
     visual: () => <LanguageVisual />,
   },

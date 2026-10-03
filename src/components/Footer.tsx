@@ -26,7 +26,7 @@ export default function Footer() {
               <Image src="/images/logo.png" alt="Aadhi Consulting Services" width={654} height={300} className="h-10 w-auto" />
             </Link>
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/60 md:mt-6">
-              A Mangaluru-based job placement consultancy helping people from India build careers abroad — with visa support and training for life abroad.
+              A Mangaluru-based job placement consultancy helping people from India build careers abroad, with visa support and training for life abroad.
             </p>
             <a
               href={`https://wa.me/${contact.whatsapp}`}
@@ -90,7 +90,7 @@ export default function Footer() {
             href="https://www.yatharthsocial.com"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Managed by Yatharth — visit yatharthsocial.com"
+            aria-label="Managed by Yatharth, visit yatharthsocial.com"
             className="group flex items-center gap-1.5 transition-colors hover:text-white/80"
           >
             <span>Managed by</span>

@@ -3,7 +3,7 @@ export const contact = {
   phones: ["+91 99671 21288", "+91 91803 22517"],
   whatsapp: "919967121288", // country code + number, digits only (used for wa.me links)
   email: "info@aadhiconsultingservices.com",
-  address: "Canara Trade Centre, First Floor, Door No 5-106-72/73/82/83, Near Market, Moodbidri, Mangalore – 574227",
+  address: "Canara Trade Centre, First Floor, Door No 5-106-72/73/82/83, Near Market, Moodbidri, Mangalore 574227",
   // PLACEHOLDERS — paste the real profile links (leave "" to hide an icon)
   instagram: "https://www.instagram.com/",
   facebook: "https://www.facebook.com/",

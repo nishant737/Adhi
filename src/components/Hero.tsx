@@ -91,7 +91,7 @@ export default function Hero() {
                 style={reveal(1500)}
                 className="motion-safe:animate-fade-up mt-4 max-w-md text-[0.8rem] leading-relaxed sm:mt-5 text-[#0d2142]/75 sm:text-base lg:max-w-none lg:text-[1.05rem]"
               >
-                We connect job seekers from India with trusted employers overseas — across
+                We connect job seekers from India with trusted employers overseas, across
                 professions and countries.
               </p>
             </div>

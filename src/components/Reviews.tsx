@@ -6,17 +6,17 @@ import Reveal from "./Reveal";
 // PLACEHOLDERS — replace with real reviews (with the person's permission) before going live.
 const reviews = [
   {
-    quote: "Your client's review goes here — a few sentences about their experience with Aadhi and where they are working now.",
+    quote: "Your client's review goes here: a few sentences about their experience with Aadhi and where they are working now.",
     name: "Client Name",
     detail: "Placed in Germany",
   },
   {
-    quote: "Your client's review goes here — how the team helped them find the right job overseas.",
+    quote: "Your client's review goes here: how the team helped them find the right job overseas.",
     name: "Client Name",
     detail: "Placed in the UAE",
   },
   {
-    quote: "Your client's review goes here — how the team guided them through the visa and emigration process.",
+    quote: "Your client's review goes here: how the team guided them through the visa and emigration process.",
     name: "Client Name",
     detail: "Placed in India",
   },

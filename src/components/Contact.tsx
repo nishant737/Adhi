@@ -105,7 +105,7 @@ export default function Contact() {
                     </svg>
                   </span>
                   <h3 className="mt-6 text-2xl font-medium tracking-tight">Almost there!</h3>
-                  <p className="mt-2 max-w-xs text-white/65">Your message is ready in WhatsApp — just press send and we&apos;ll get back to you.</p>
+                  <p className="mt-2 max-w-xs text-white/65">Your message is ready in WhatsApp. Just press send and we&apos;ll get back to you.</p>
                   <button type="button" onClick={() => setSent(false)} className="mt-8 text-sm font-medium text-white/70 underline underline-offset-4 hover:text-white">
                     Send another enquiry
                   </button>

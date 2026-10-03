@@ -5,21 +5,22 @@ import Globe from "./Globe";
 
 const steps = [
   {
-    title: "Based in Mangaluru",
-    body: "A local team you can meet in person, guiding job seekers from India who want to build a career abroad.",
-    icon: PinIcon,
-  },
-  {
-    title: "Jobs Across the World",
-    body: "We match candidates from every profession with employers overseas, and support them through visa and emigration.",
+    title: "Job Placement, India & Abroad",
+    body: "We place candidates from every profession with employers across India, the Gulf and Europe, matched to their skills, experience and goals.",
     icon: BriefcaseIcon,
   },
   {
-    title: "Training for Your Destination",
-    body: "Language and job-readiness training to prepare you for work and life in your new country, before you fly.",
+    title: "HR Services for Employers",
+    body: "Companies come to us for recruitment, candidate screening and HR support, so they can hire the right people without the guesswork.",
+    icon: PeopleIcon,
+  },
+  {
+    title: "Training, Guidance & Visas",
+    body: "Career guidance, job-readiness and language training, and hands-on help with your visa application, so you're ready from day one.",
     icon: CapIcon,
   },
 ];
+
 
 const HOLD = 0.06; // share of the pinned scroll spent resting before the first and after the last step
 
@@ -81,29 +82,36 @@ export default function About() {
         <div className="sticky top-0 h-svh">
           <GridSquares />
 
-          <div className="relative mx-auto flex h-full max-w-7xl flex-col px-5 pb-6 pt-12 sm:px-10 sm:pt-16 lg:pb-10">
+          <div className="relative mx-auto flex h-full max-w-7xl flex-col px-5 pb-6 pt-12 sm:px-10 sm:pt-16 lg:pb-8 lg:pt-14">
             {/* Header row: label + heading on the left, intro on the right */}
-            <div className="grid justify-items-center gap-4 text-center sm:gap-8 lg:grid-cols-2 lg:items-end lg:justify-items-start lg:gap-20 lg:text-left">
+            <div className="grid justify-items-center gap-4 text-center sm:gap-8 lg:grid-cols-2 lg:items-center lg:justify-items-start lg:gap-16 lg:text-left">
               <div>
                 <span className="inline-flex rounded-full bg-[#e6ecfa] px-4 py-2 text-xs font-medium text-[#0d2142] sm:px-5 sm:py-2.5 sm:text-sm">
                   About Us
                 </span>
-                <h2 className="mt-4 text-[1.9rem] font-medium leading-[1.05] tracking-[-0.03em] sm:mt-6 sm:text-5xl lg:text-[3.25rem]">
-                  Connecting Indian Talent
-                  <span className="mt-1 block text-[1.5rem] text-[#7ea6ff] sm:mt-2 sm:text-4xl lg:text-[2.4rem]">
-                    With Jobs Worldwide
+                <h2 className="mt-4 text-[1.9rem] font-medium leading-[1.05] tracking-[-0.03em] sm:mt-6 sm:text-5xl lg:mt-5 lg:text-[2.9rem]">
+                  One Partner for Your
+                  <span className="mt-1 block text-[1.5rem] text-[#7ea6ff] sm:mt-2 sm:text-4xl lg:text-[2.1rem]">
+                    Career, in India &amp; Abroad
                   </span>
                 </h2>
               </div>
 
-              <p className="mx-auto max-w-md text-[0.85rem] leading-relaxed lg:mx-0 lg:max-w-lg text-white/70 sm:text-lg lg:pb-2 max-lg:[@media(max-height:680px)]:hidden">
-                Aadhi Consulting Services is a Mangaluru-based job placement consultancy. We help
-                people from India find the right job abroad — from the first conversation to the
-                visa — with training to prepare you for working abroad.
-              </p>
+              <div className="mx-auto max-w-md space-y-3 text-[0.85rem] leading-relaxed text-white/70 sm:space-y-4 sm:text-lg lg:mx-0 lg:max-w-xl lg:space-y-3 lg:text-base max-lg:[@media(max-height:680px)]:hidden">
+                <p>
+                  Aadhi Consulting Services is a job placement and HR consultancy in Moodbidri,
+                  Mangalore. We help job seekers find the right role in India or overseas, and we
+                  help employers hire the right people with confidence.
+                </p>
+                <p className="hidden sm:block lg:[@media(max-height:760px)]:hidden">
+                  From career guidance and training to interviews and visa applications, our
+                  experienced team stays with you at every step. We treat every candidate and
+                  every client as a long-term relationship, not a one-time placement.
+                </p>
+              </div>
             </div>
 
-            <div className="mt-5 grid min-h-0 flex-1 grid-rows-[minmax(0,1fr)_auto] gap-5 sm:mt-10 lg:grid-cols-2 lg:grid-rows-1 lg:gap-20">
+            <div className="mt-5 grid min-h-0 flex-1 grid-rows-[minmax(0,1fr)_auto] gap-5 sm:mt-10 lg:mt-8 lg:grid-cols-2 lg:grid-rows-1 lg:gap-16">
               <div className="flex min-h-0 flex-col justify-center">
                 <Globe className="mx-auto w-full max-w-md lg:max-w-none" />
               </div>
@@ -117,7 +125,7 @@ export default function About() {
                     return (
                       <li
                         key={step.title}
-                        className="grid grid-cols-[2rem_1fr] gap-x-4 pb-5 last:pb-0 sm:grid-cols-[2.5rem_1fr] sm:gap-x-8 lg:pb-10"
+                        className="grid grid-cols-[2rem_1fr] gap-x-4 pb-5 last:pb-0 sm:grid-cols-[2.5rem_1fr] sm:gap-x-8 lg:pb-7"
                       >
                         <div className="flex flex-col items-center">
                           <Icon
@@ -139,14 +147,14 @@ export default function About() {
                             isActive ? "opacity-100" : "opacity-35"
                           }`}
                         >
-                          <h3 className="text-[1.35rem] font-medium tracking-tight sm:text-2xl lg:text-3xl">{step.title}</h3>
+                          <h3 className="text-[1.35rem] font-medium tracking-tight sm:text-2xl lg:text-[1.65rem]">{step.title}</h3>
                           {/* Phones show only the active step's text, expanding smoothly; desktop shows all */}
                           <div
                             className={`grid transition-[grid-template-rows,opacity] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] lg:grid-rows-[1fr] lg:opacity-100 ${
                               isActive ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
                             }`}
                           >
-                            <p className="min-h-0 max-w-lg overflow-hidden pt-2 text-[0.9rem] leading-relaxed text-[#a9bde8] sm:pt-3 sm:text-base lg:pt-4 lg:text-lg">
+                            <p className="min-h-0 max-w-lg overflow-hidden pt-2 text-[0.9rem] leading-relaxed text-[#a9bde8] sm:pt-3 sm:text-base lg:pt-2 lg:text-base">
                               {step.body}
                             </p>
                           </div>
@@ -188,11 +196,12 @@ function GridSquares() {
 
 type IconProps = { className?: string };
 
-function PinIcon({ className }: IconProps) {
+function PeopleIcon({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z" />
-      <circle cx="12" cy="9.5" r="2.5" />
+      <circle cx="9" cy="8" r="3.5" />
+      <path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6" />
+      <path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.4c2.1.7 3.5 2.7 3.5 5.6" />
     </svg>
   );
 }

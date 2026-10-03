@@ -6,7 +6,7 @@ import Reveal from "./Reveal";
 type Person = { name: string; role: string; tags: string[]; photo: string; experience?: string; note?: string };
 const faculty: Person[] = [
   { name: "Aishwarya Shetty", role: "German Consultant", tags: ["German", "Language training"], photo: "/images/faculty/aishwarya-portrait-new.jpg" },
-  { name: "Sheryl Mathias", role: "Recruiter – International", tags: ["International", "Recruitment"], photo: "/images/faculty/sheryl-portrait-new.jpg" },
+  { name: "Sheryl Mathias", role: "International Recruiter", tags: ["International", "Recruitment"], photo: "/images/faculty/sheryl-portrait-new.jpg" },
   { name: "Umaira", role: "Pan India Recruiter", tags: ["Pan India", "Recruitment"], photo: "/images/faculty/umaira-portrait-new.jpg" },
   { name: "Vidyashree", role: "Sr. Recruiter", tags: ["Recruitment"], photo: "/images/faculty/vidyashree-portrait-new.jpg" },
 ];

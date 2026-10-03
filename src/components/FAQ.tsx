@@ -1,38 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { faqs } from "@/data/faqs";
 import Reveal from "./Reveal";
 
-const faqs = [
-  {
-    q: "What does Aadhi Consulting do?",
-    a: "We're a job placement consultancy. We help people from India find jobs abroad — and in India — and guide them through visa stamping and the emigration process. We also offer language and job-readiness training to prepare candidates for their destination country.",
-  },
-  {
-    q: "Which professions do you place?",
-    a: "All kinds — we work with candidates across professions and skill levels. Tell us about your qualification and experience, and we'll look for roles that match.",
-  },
-  {
-    q: "Which countries can I work in?",
-    a: "We place candidates in several countries abroad, including Germany, Israel, the UAE and the UK, as well as roles within India. Ask us about the country you have in mind.",
-  },
-  {
-    q: "Do you help with the visa and emigration process?",
-    a: "Yes. We guide you step by step through visa stamping and the emigration process, so you know what to do at every stage.",
-  },
-  {
-    q: "Do you offer language training?",
-    a: "Yes. Depending on where you're going, you may need the local language for your job or visa. We offer language and job-readiness training for your destination country — for example, German for those planning to work in Germany.",
-  },
-  {
-    q: "Where is Aadhi Consulting based?",
-    a: "Our office is at Canara Trade Centre, First Floor, Near Market, Moodbidri, Mangalore – 574227. You can also reach us by phone, WhatsApp or email — our details are in the contact section below.",
-  },
-  {
-    q: "How do I get started?",
-    a: "Send us your details using the contact form below, or call or message us. We'll talk through your goals and the next steps with you.",
-  },
-];
 
 export default function FAQ() {
   const [open, setOpen] = useState<number | null>(0);

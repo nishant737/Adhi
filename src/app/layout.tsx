@@ -9,9 +9,27 @@ const interTight = Inter_Tight({
 });
 
 export const metadata: Metadata = {
-  title: "Aadhi Consulting Services — Overseas Job Placement",
+  title: "Aadhi Consulting Services | Job Placement & HR Consultancy in Mangalore",
   description:
-    "Mangaluru-based job placement consultancy helping people from India find jobs abroad — with visa and emigration support, plus German training and placement for Germany.",
+    "Job placement consultancy in Moodbidri, Mangalore. Jobs in India and abroad, HR services for employers, training, career guidance and visa application support.",
+  keywords: [
+    "job placement consultancy Mangalore",
+    "overseas job consultancy Mangalore",
+    "jobs abroad from India",
+    "HR services Mangalore",
+    "recruitment agency Moodbidri",
+    "career guidance Mangalore",
+    "visa application assistance",
+    "Aadhi Consulting Services",
+  ],
+  openGraph: {
+    title: "Aadhi Consulting Services | Job Placement in India & Abroad",
+    description:
+      "Job placement, HR services, training, career guidance and visa application support from Moodbidri, Mangalore.",
+    type: "website",
+    locale: "en_IN",
+    siteName: "Aadhi Consulting Services",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
