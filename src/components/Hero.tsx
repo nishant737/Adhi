@@ -3,7 +3,7 @@ import type { CSSProperties } from "react";
 import { preload } from "react-dom";
 import HeroVideo from "./HeroVideo";
 
-const POSTER = "/videos/hero-poster.jpg";
+const POSTER = "/videos/hero-v2-poster.jpg";
 
 // What Aadhi does, at a glance (swap in real numbers, e.g. "1,000+ placed", once the client confirms them)
 const stats = [
