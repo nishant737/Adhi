@@ -61,13 +61,10 @@ export default function Hero() {
             <div>
               <h1
                 style={reveal(1150)}
-                className="motion-safe:animate-fade-up mt-2 text-[2rem] font-semibold leading-[0.92] tracking-[-0.05em] sm:mt-4 sm:text-6xl lg:text-[3.5rem] xl:text-[3.75rem]"
+                className="motion-safe:animate-fade-up mt-2 max-w-[15ch] text-[1.6rem] font-semibold leading-[0.95] tracking-[-0.04em] sm:mt-4 sm:max-w-[18ch] sm:text-5xl lg:max-w-[20ch] lg:text-[2.9rem] xl:text-[3.1rem]"
               >
-                <span className="block">
-                  YOUR CAREER <br className="lg:hidden" />
-                  ABROAD
-                </span>
-                <span className="block text-[#3f74b5]">STARTS HERE</span>
+                <span className="block">CONNECTING AMBITIOUS PROFESSIONALS</span>
+                <span className="block text-[#3f74b5]">WITH GLOBAL OPPORTUNITIES</span>
               </h1>
 
               <div style={reveal(1350)} className="motion-safe:animate-fade-up mt-5 flex gap-2 sm:mt-6 sm:gap-3">
@@ -91,8 +88,7 @@ export default function Hero() {
                 style={reveal(1500)}
                 className="motion-safe:animate-fade-up mt-4 max-w-md text-[0.8rem] leading-relaxed sm:mt-5 text-[#0d2142]/75 sm:text-base lg:max-w-none lg:text-[1.05rem]"
               >
-                We connect job seekers from India with trusted employers overseas, across
-                professions and countries.
+                We connect skilled professionals with international career opportunities, providing trusted guidance throughout the overseas placement journey.
               </p>
             </div>
           </div>

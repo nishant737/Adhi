@@ -6,21 +6,20 @@ import Globe from "./Globe";
 const steps = [
   {
     title: "Job Placement, India & Abroad",
-    body: "We place candidates from every profession with employers across India, the Gulf and Europe, matched to their skills, experience and goals.",
+    body: "We connect professionals across industries with trusted employers in India, the Gulf, and Europe, matching opportunities to their skills, experience, and career aspirations.",
     icon: BriefcaseIcon,
   },
   {
     title: "HR Services for Employers",
-    body: "Companies come to us for recruitment, candidate screening and HR support, so they can hire the right people without the guesswork.",
+    body: "Businesses rely on us for recruitment, candidate screening, and HR support, helping them identify the right talent efficiently and make confident hiring decisions.",
     icon: PeopleIcon,
   },
   {
     title: "Training, Guidance & Visas",
-    body: "Career guidance, job-readiness and language training, and hands-on help with your visa application, so you're ready from day one.",
+    body: "We provide career guidance, job-readiness and language training, along with practical visa application support, helping candidates prepare confidently for their international career journey.",
     icon: CapIcon,
   },
 ];
-
 
 const HOLD = 0.06; // share of the pinned scroll spent resting before the first and after the last step
 
@@ -82,9 +81,9 @@ export default function About() {
         <div className="sticky top-0 h-svh">
           <GridSquares />
 
-          <div className="relative mx-auto flex h-full max-w-7xl flex-col px-5 pb-6 pt-12 sm:px-10 sm:pt-16 lg:pb-8 lg:pt-14">
+          <div className="relative mx-auto flex h-full max-w-7xl flex-col px-5 pb-6 pt-12 sm:px-10 sm:pt-16 lg:justify-center lg:py-12">
             {/* Header row: label + heading on the left, intro on the right */}
-            <div className="grid justify-items-center gap-4 text-center sm:gap-8 lg:grid-cols-2 lg:items-center lg:justify-items-start lg:gap-16 lg:text-left">
+            <div className="grid justify-items-center gap-4 text-center sm:gap-8 lg:grid-cols-2 lg:items-end lg:justify-items-start lg:gap-16 lg:text-left">
               <div>
                 <span className="inline-flex rounded-full bg-[#e6ecfa] px-4 py-2 text-xs font-medium text-[#0d2142] sm:px-5 sm:py-2.5 sm:text-sm">
                   About Us
@@ -99,19 +98,12 @@ export default function About() {
 
               <div className="mx-auto max-w-md space-y-3 text-[0.85rem] leading-relaxed text-white/70 sm:space-y-4 sm:text-lg lg:mx-0 lg:max-w-xl lg:space-y-3 lg:text-base max-lg:[@media(max-height:680px)]:hidden">
                 <p>
-                  Aadhi Consulting Services is a job placement and HR consultancy in Moodbidri,
-                  Mangalore. We help job seekers find the right role in India or overseas, and we
-                  help employers hire the right people with confidence.
-                </p>
-                <p className="hidden sm:block lg:[@media(max-height:760px)]:hidden">
-                  From career guidance and training to interviews and visa applications, our
-                  experienced team stays with you at every step. We treat every candidate and
-                  every client as a long-term relationship, not a one-time placement.
+                  Aadhi Consulting Services is a professional HR consulting firm offering tailored talent solutions, including permanent staffing, executive hiring, and contractual recruitment. With an experienced team and technology-driven recruitment solutions, we connect businesses with the right talent while providing strategic workforce support that helps organizations grow and succeed.
                 </p>
               </div>
             </div>
 
-            <div className="mt-5 grid min-h-0 flex-1 grid-rows-[minmax(0,1fr)_auto] gap-5 sm:mt-10 lg:mt-8 lg:grid-cols-2 lg:grid-rows-1 lg:gap-16">
+            <div className="mt-5 grid min-h-0 flex-1 grid-rows-[minmax(0,1fr)_auto] gap-5 sm:mt-10 lg:mt-12 lg:flex-none lg:grid-cols-2 lg:grid-rows-1 lg:items-center lg:gap-16">
               <div className="flex min-h-0 flex-col justify-center">
                 <Globe className="mx-auto w-full max-w-md lg:max-w-none" />
               </div>

@@ -7,6 +7,8 @@ import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import Reviews from "@/components/Reviews";
 import Services from "@/components/Services";
+import Solutions from "@/components/Solutions";
+import Stats from "@/components/Stats";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { contact } from "@/data/contact";
 import { faqs } from "@/data/faqs";
@@ -34,7 +36,7 @@ const jsonLd = [
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Services",
-      itemListElement: ["Job Placement (India & Abroad)", "HR Services", "Training", "Career Guidance", "Visa Application Support"].map((name) => ({
+      itemListElement: ["Job Placement (India & Abroad)", "Permanent Staffing", "Leadership Hiring", "Contractual Staffing", "Corporate Event Planning", "Corporate Travel Management", "Career Guidance & Study Abroad", "Visa Application Support"].map((name) => ({
         "@type": "Offer",
         itemOffered: { "@type": "Service", name },
       })),
@@ -68,6 +70,8 @@ export default function Home() {
         {/* Slides up over the pinned hero */}
         <About />
         <Services />
+        <Solutions />
+        <Stats />
         <Faculty />
         <Reviews />
         <FAQ />

@@ -3,22 +3,31 @@
 import { useEffect, useRef, useState } from "react";
 import Reveal from "./Reveal";
 
-// PLACEHOLDERS — replace with real reviews (with the person's permission) before going live.
+// Real candidate reviews from Aadhi's existing website, lightly edited for clarity.
 const reviews = [
   {
-    quote: "Your client's review goes here: a few sentences about their experience with Aadhi and where they are working now.",
-    name: "Client Name",
-    detail: "Placed in Germany",
+    quote:
+      "Aadhi Consulting Services is one of the best when it comes to job placements. Their team is professional, responsive and genuinely invested in finding the right fit. I highly recommend them.",
+    name: "Shriya Jaiswan",
+    detail: "Placed candidate",
   },
   {
-    quote: "Your client's review goes here: how the team helped them find the right job overseas.",
-    name: "Client Name",
-    detail: "Placed in the UAE",
+    quote:
+      "Aadhi Consulting Services were extremely helpful throughout my job placement. They guided me at every stage and made the whole process smooth. Kudos to the team.",
+    name: "Raviraj Shankar",
+    detail: "Placed candidate",
   },
   {
-    quote: "Your client's review goes here: how the team guided them through the visa and emigration process.",
-    name: "Client Name",
-    detail: "Placed in India",
+    quote:
+      "I can't thank Aadhi Consulting enough for their support during my job search. Their guidance and steady follow-up made a real difference in landing the right role.",
+    name: "Naveen Baliga",
+    detail: "Placed candidate",
+  },
+  {
+    quote:
+      "Aadhi Consulting came highly recommended, and they exceeded my expectations. Their approach is honest and well organised. I would strongly recommend them to anyone looking for the right job.",
+    name: "Usman B",
+    detail: "Placed candidate",
   },
 ];
 
