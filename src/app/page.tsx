@@ -4,6 +4,7 @@ import FAQ from "@/components/FAQ";
 import Faculty from "@/components/Faculty";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
+import Manpower from "@/components/Manpower";
 import Navbar from "@/components/Navbar";
 import Reviews from "@/components/Reviews";
 import Services from "@/components/Services";
@@ -71,6 +72,7 @@ export default function Home() {
         <About />
         <Services />
         <Solutions />
+        <Manpower />
         <Stats />
         <Faculty />
         <Reviews />
