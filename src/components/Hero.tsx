@@ -3,7 +3,7 @@ import type { CSSProperties } from "react";
 import { preload } from "react-dom";
 import HeroVideo from "./HeroVideo";
 
-const POSTER = "/videos/hero-v2-poster.jpg";
+const POSTER = "/videos/hero-v3-poster.jpg";
 
 // What Aadhi does, at a glance (swap in real numbers, e.g. "1,000+ placed", once the client confirms them)
 const stats = [
@@ -22,17 +22,18 @@ export default function Hero() {
 
   return (
     // Sticky: the video stays pinned while the next section slides up over it
-    // Phones/tablets (portrait): video fills the top, content sits below on white.
-    // Desktop: video fills the whole screen with the content over it.
+    // Video fills the whole screen with the content over it (portrait on phones, landscape on desktop).
     <section className="sticky top-0 z-0 flex h-svh w-full flex-col overflow-hidden bg-white lg:block">
-      <div className="relative min-h-[36svh] flex-1 overflow-hidden lg:absolute lg:inset-0">
+      <div className="absolute inset-0 overflow-hidden">
         <div className="hero-scroll absolute inset-0">
           {/* The reveal is pure CSS, so it starts on first paint instead of waiting for JavaScript */}
           <HeroVideo poster={POSTER} />
         </div>
-        {/* Portrait: blend the bottom of the video into the white content area */}
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white via-white/60 to-transparent lg:hidden" />
       </div>
+
+      {/* Phones/tablets: light fades at the top (logo) and bottom (text) so navy text stays readable */}
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-white/85 to-transparent lg:hidden" />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[62%] bg-gradient-to-t from-white via-white/85 to-transparent lg:hidden" />
 
       {/* Desktop: soft light wash on the left and bottom so the navy text stays readable over the video */}
       <div
@@ -45,7 +46,7 @@ export default function Hero() {
         className="pointer-events-none absolute -left-40 top-1/4 hidden h-[520px] w-[620px] rounded-full bg-[#79a7d8]/25 blur-[120px] lg:block"
       />
 
-      <div className="relative flex flex-col justify-end gap-6 bg-white px-5 pb-8 pt-2 text-[#0d2142] sm:gap-8 sm:px-10 sm:pb-12 lg:h-full lg:flex-row lg:justify-between lg:gap-12 lg:bg-transparent lg:pb-14 lg:pt-36">
+      <div className="relative flex min-h-0 flex-1 flex-col justify-end gap-5 px-5 pb-[84px] pt-24 text-[#0d2142] sm:gap-6 sm:px-10 sm:pb-[100px] lg:h-full lg:flex-row lg:justify-between lg:gap-12 lg:bg-transparent lg:pb-14 lg:pt-36">
         {/* Left column */}
         <div className="flex flex-col justify-end">
           <div>
@@ -61,7 +62,7 @@ export default function Hero() {
             <div>
               <h1
                 style={reveal(1150)}
-                className="motion-safe:animate-fade-up mt-2 max-w-[15ch] text-[1.6rem] font-semibold leading-[0.95] tracking-[-0.04em] sm:mt-4 sm:max-w-[18ch] sm:text-5xl lg:max-w-[20ch] lg:text-[2.9rem] xl:text-[3.1rem]"
+                className="motion-safe:animate-fade-up mt-2 max-w-[15ch] text-[1.6rem] font-semibold leading-[0.95] tracking-[-0.04em] sm:mt-4 sm:max-w-[18ch] sm:text-[2.6rem] lg:max-w-[20ch] lg:text-[2.9rem] xl:text-[3.1rem]"
               >
                 <span className="block">CONNECTING AMBITIOUS PROFESSIONALS</span>
                 <span className="block text-[#3f74b5]">WITH GLOBAL OPPORTUNITIES</span>
@@ -96,7 +97,7 @@ export default function Hero() {
 
         {/* Right column: stats */}
         <div className="flex flex-col justify-between gap-8 lg:shrink-0 lg:items-end">
-          <dl className="grid grid-cols-4 gap-x-3 border-t border-[#0d2142]/10 pt-4 sm:gap-x-6 sm:pt-6 lg:grid-cols-1 lg:gap-5 lg:border-0 lg:pt-0 lg:text-right">
+          <dl className="grid grid-cols-4 gap-x-3 border-t border-[#0d2142]/10 pt-4 sm:gap-x-6 sm:pt-6 sm:max-lg:pr-20 lg:grid-cols-1 lg:gap-5 lg:border-0 lg:pt-0 lg:text-right">
             {stats.map((stat, i) => (
               <div
                 key={stat.label}
