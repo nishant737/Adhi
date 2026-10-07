@@ -39,29 +39,6 @@ const solutions: { title: string; tag: string; body: string; points: string[]; i
     ),
   },
   {
-    title: "Corporate Event Planning",
-    tag: "End-to-end",
-    body: "Complete planning and on-ground support, including technical setup, themes and sound, so every event runs smoothly.",
-    points: ["Conferences & seminars", "Product launches", "Exhibitions", "Award ceremonies", "Motivation programs"],
-    icon: (
-      <>
-        <rect x="3" y="5" width="18" height="16" rx="2" />
-        <path d="M3 10h18M8 3v4M16 3v4M8 15h3" />
-      </>
-    ),
-  },
-  {
-    title: "Corporate Travel Management",
-    tag: "Domestic & international",
-    body: "Business and leisure travel handled for you, from bookings to getting around on arrival.",
-    points: ["Hotel reservations", "Flight ticketing", "Weekend & holiday tours", "Cab services"],
-    icon: (
-      <>
-        <path d="M2.5 13.5 21 6l-4 14-5.5-4.5L8 19v-5l9-7-11 6-3.5-1.5Z" />
-      </>
-    ),
-  },
-  {
     title: "Career Guidance",
     tag: "Study abroad",
     body: "Our experienced counsellors help you find a university that fits your budget and career goals, and guide you through the full study-abroad process.",
@@ -90,8 +67,8 @@ export default function Solutions() {
             </h2>
           </div>
           <p className="max-w-md text-[0.95rem] leading-relaxed text-[#0d2142]/60 sm:text-lg lg:justify-self-end lg:pb-1">
-            Beyond placements, we support companies with staffing, events and travel, and guide
-            students planning to study abroad.
+            Beyond placements, we support companies with permanent, leadership and contractual
+            staffing, and guide students planning to study abroad.
           </p>
         </Reveal>
 

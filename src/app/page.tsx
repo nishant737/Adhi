@@ -37,7 +37,7 @@ const jsonLd = [
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Services",
-      itemListElement: ["Job Placement (India & Abroad)", "Permanent Staffing", "Leadership Hiring", "Contractual Staffing", "Corporate Event Planning", "Corporate Travel Management", "Career Guidance & Study Abroad", "Visa Application Support"].map((name) => ({
+      itemListElement: ["Job Placement (India & Abroad)", "Permanent Staffing", "Leadership Hiring", "Contractual Staffing", "Career Guidance & Study Abroad", "Visa Application Support"].map((name) => ({
         "@type": "Offer",
         itemOffered: { "@type": "Service", name },
       })),
