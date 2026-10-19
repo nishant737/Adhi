@@ -1,4 +1,4 @@
-const SRC = "/videos/hero-v3-1080.mp4";
+const SRC = "/videos/hero-v4-1080.mp4";
 
 // Plays once per page load at normal speed and rests on the final frame.
 // Phones/tablets: fills the portrait screen (object-cover). Desktop: the full frame is shown

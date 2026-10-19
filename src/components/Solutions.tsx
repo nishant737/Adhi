@@ -1,52 +1,43 @@
 import type { ReactNode } from "react";
 import Reveal from "./Reveal";
 
-// Full service list from Aadhi's existing website, rewritten for clarity.
-const solutions: { title: string; tag: string; body: string; points: string[]; icon: ReactNode }[] = [
+// What Aadhi offers.
+type Solution = { title: string; tag: string; body: string; points: string[]; icon: ReactNode };
+
+const solutions: Solution[] = [
   {
-    title: "Permanent Staffing",
-    tag: "Hiring",
-    body: "Full-time hiring across IT and a wide range of sectors, for companies throughout India.",
-    points: ["IT & technology", "Healthcare", "BPO / KPO", "Ed-tech", "E-commerce", "Manufacturing"],
+    title: "Job Placement",
+    tag: "Domestic & international",
+    body: "We match candidates with the right employers, for roles across India and overseas, and support them from the first interview to the first day.",
+    points: ["Domestic placement", "International placement", "All professions"],
     icon: (
       <>
-        <circle cx="12" cy="8" r="4" />
-        <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
+        <rect x="3" y="7" width="18" height="13" rx="2" />
+        <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18" />
       </>
     ),
   },
   {
-    title: "Leadership Hiring",
-    tag: "Permanent & contract",
-    body: "A competency-based hiring framework for senior and critical roles, reducing the time and effort it takes to find the right leader.",
-    points: ["Senior & executive roles", "Competency-based assessment", "Faster closures"],
+    title: "Payroll Management",
+    tag: "For employers",
+    body: "Accurate, on-time payroll handled for your workforce, so you can focus on running your business.",
+    points: ["Salary processing", "Statutory compliance", "Payslips & records"],
     icon: (
       <>
-        <path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9L12 3Z" />
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <path d="M3 10h18M7 15h4" />
       </>
     ),
   },
   {
-    title: "Contractual Staffing",
-    tag: "Flexible models",
-    body: "Flexible staffing that adapts to your business needs, from short projects to long-term engagements.",
-    points: ["Part-time", "Contract", "Project-based", "Temporary staff", "Work from home"],
+    title: "German Language Training",
+    tag: "For careers in Germany",
+    body: "Structured German language training that prepares candidates for work and life in Germany.",
+    points: ["Beginner to advanced", "Workplace German", "Interview preparation"],
     icon: (
       <>
-        <rect x="4" y="3" width="16" height="18" rx="2" />
-        <path d="M8 8h8M8 12h8M8 16h5" />
-      </>
-    ),
-  },
-  {
-    title: "Career Guidance",
-    tag: "Study abroad",
-    body: "Our experienced counsellors help you find a university that fits your budget and career goals, and guide you through the full study-abroad process.",
-    points: ["University shortlisting", "Budget planning", "End-to-end application support"],
-    icon: (
-      <>
-        <path d="M2 9l10-5 10 5-10 5L2 9Z" />
-        <path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5M22 9v6" />
+        <path d="M4 5h9M8.5 3v2M6 5c0 4 3 7 6 8M11 5c0 3-2 6-6 8" />
+        <path d="M13 21l4-9 4 9M14.5 18h5" />
       </>
     ),
   },
@@ -67,8 +58,8 @@ export default function Solutions() {
             </h2>
           </div>
           <p className="max-w-md text-[0.95rem] leading-relaxed text-[#0d2142]/60 sm:text-lg lg:justify-self-end lg:pb-1">
-            Beyond placements, we support companies with permanent, leadership and contractual
-            staffing, and guide students planning to study abroad.
+            From finding the right job to managing payroll and learning German, we support
+            job seekers and employers at every step.
           </p>
         </Reveal>
 

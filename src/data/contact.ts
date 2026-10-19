@@ -7,7 +7,7 @@ export const contact = {
   // PLACEHOLDERS — paste the real profile links (leave "" to hide an icon)
   instagram: "https://www.instagram.com/",
   facebook: "https://www.facebook.com/",
-  hours: "Mon – Sat · 9:30 am – 6:00 pm", // PLACEHOLDER — confirm real opening hours
+  hours: "Mon – Sat · 9:00 am – 5:00 pm",
 };
 
 export const telHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, "")}`;
