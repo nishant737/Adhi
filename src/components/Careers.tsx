@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, type FormEvent, type ReactNode } from "react";
-import { contact } from "@/data/contact";
-import { experienceOptions, jobs, locationOptions, type Job } from "@/data/jobs";
+import { whatsappLink } from "@/data/contact";
+import { experienceOptions, locationOptions, type Job } from "@/data/jobs";
+import { HONEYPOT, SHEET_URL, sendToSheet } from "@/data/sheet";
+import ApplyModal from "./ApplyModal";
 import Reveal from "./Reveal";
 
 const filters = ["All", "India", "Abroad"] as const;
@@ -10,20 +12,12 @@ type Filter = (typeof filters)[number];
 
 // No server needed: applications open in WhatsApp, ready to send
 function sendToWhatsApp(lines: string[]) {
-  const text = encodeURIComponent(lines.filter(Boolean).join("\n"));
-  window.open(`https://wa.me/${contact.whatsapp}?text=${text}`, "_blank", "noopener");
+  window.open(whatsappLink(lines), "_blank", "noopener");
 }
 
-function applyForJob(job: Job) {
-  sendToWhatsApp([
-    "Hello Aadhi Consulting, I'd like to apply for this job.",
-    `Role: ${job.title}`,
-    `Location: ${job.location}`,
-  ]);
-}
-
-export default function Careers() {
+export default function Careers({ jobs }: { jobs: Job[] }) {
   const [filter, setFilter] = useState<Filter>("All");
+  const [applying, setApplying] = useState<Job | null>(null);
   const shown = jobs.filter((job) => filter === "All" || job.region === filter);
 
   return (
@@ -69,9 +63,14 @@ export default function Careers() {
               </p>
             </div>
 
-            <ul className="mt-5 overflow-hidden rounded-[1.75rem] border border-[#0d2142]/[0.08]">
+            {shown.length === 0 && (
+              <p className="mt-5 rounded-[1.75rem] border border-dashed border-[#0d2142]/15 p-8 text-center text-[#0d2142]/60">
+                No openings here right now. Tell us what you&apos;re looking for and we&apos;ll reach out.
+              </p>
+            )}
+            <ul className={`mt-5 overflow-hidden rounded-[1.75rem] border border-[#0d2142]/[0.08] ${shown.length ? "" : "hidden"}`}>
               {shown.map((job) => (
-                <li key={job.title} className="border-b border-[#0d2142]/[0.07] last:border-b-0">
+                <li key={`${job.title}-${job.location}`} className="border-b border-[#0d2142]/[0.07] last:border-b-0">
                   <article className="flex flex-col gap-4 p-5 transition-colors duration-300 hover:bg-[#f6f8fc] sm:flex-row sm:items-center sm:justify-between sm:p-6">
                     <div className="min-w-0">
                       <h3 className="text-lg font-medium tracking-tight sm:text-xl">{job.title}</h3>
@@ -90,7 +89,7 @@ export default function Careers() {
                     </div>
                     <button
                       type="button"
-                      onClick={() => applyForJob(job)}
+                      onClick={() => setApplying(job)}
                       aria-label={`Apply for ${job.title}`}
                       className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-[#0d2142] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#16305c]"
                     >
@@ -111,6 +110,8 @@ export default function Careers() {
           </Reveal>
         </div>
       </div>
+
+      {applying && <ApplyModal job={applying} onClose={() => setApplying(null)} />}
     </section>
   );
 }
@@ -133,7 +134,22 @@ function JobRequestForm() {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    const place = location === "Other" ? data.get("otherLocation") : location;
+    if (data.get(HONEYPOT)) {
+      setSent(true);
+      return;
+    }
+    const place = String(location === "Other" ? data.get("otherLocation") : location);
+    // Also saved as a row in the client's Google Sheet (no-op until it's connected)
+    if (SHEET_URL) {
+      sendToSheet({
+        kind: "request",
+        name: String(data.get("name")),
+        phone: String(data.get("phone")),
+        role: String(data.get("role")),
+        experience: String(data.get("experience")),
+        preferredLocation: place,
+      }).catch(() => {});
+    }
     sendToWhatsApp([
       "Hello Aadhi Consulting, I'm looking for a job.",
       `Name: ${data.get("name")}`,
@@ -171,6 +187,8 @@ function JobRequestForm() {
             <TextField label="Full name" name="name" placeholder="Your name" autoComplete="name" />
             <TextField label="Phone number" name="phone" type="tel" placeholder="+91" autoComplete="tel" />
           </div>
+          {/* Spam trap: hidden from people, bots fill it in */}
+          <input type="text" name={HONEYPOT} tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
           <TextField label="Job you're targeting" name="role" placeholder="e.g. Electrician, Staff Nurse, Accountant" />
 
           <label className="block">

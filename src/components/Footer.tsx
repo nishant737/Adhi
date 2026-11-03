@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { contact, telHref } from "@/data/contact";
+import { contact, telHref, whatsappHref } from "@/data/contact";
 import SocialLinks from "./SocialLinks";
 
 const links = [
@@ -30,7 +30,7 @@ export default function Footer() {
               A Mangaluru-based job placement consultancy helping people from India build careers abroad, with visa support and training for life abroad.
             </p>
             <a
-              href={`https://wa.me/${contact.whatsapp}`}
+              href={whatsappHref}
               target="_blank"
               rel="noopener"
               className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-[#0d2142] transition-colors hover:bg-[#e6ecfa]"

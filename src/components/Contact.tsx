@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { contact, telHref } from "@/data/contact";
+import { contact, telHref, whatsappLink } from "@/data/contact";
 import Reveal from "./Reveal";
 
 const interests = ["Job Abroad", "Job in India", "Visa & Emigration", "Language Training"];
@@ -14,16 +14,14 @@ export default function Contact() {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    const text = [
+    const lines = [
       "Hello Aadhi Consulting, I'd like to know more.",
       `Name: ${data.get("name")}`,
       `Phone: ${data.get("phone")}`,
       `Interested in: ${interest}`,
       data.get("message") ? `Message: ${data.get("message")}` : "",
-    ]
-      .filter(Boolean)
-      .join("\n");
-    window.open(`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(text)}`, "_blank", "noopener");
+    ];
+    window.open(whatsappLink(lines), "_blank", "noopener");
     setSent(true);
   };
 

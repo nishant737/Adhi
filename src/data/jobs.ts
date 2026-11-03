@@ -1,4 +1,4 @@
-// Open positions shown in the Careers section. Add, edit or remove entries here.
+// Fallback openings, used until the Google Sheet is connected (then the sheet's "Openings" tab is used).
 // `salary` and `experience` are optional: leave them out and they simply aren't shown.
 export type Job = {
   title: string;

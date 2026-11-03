@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter_Tight } from "next/font/google";
 import SmoothScroll from "@/components/SmoothScroll";
+import { SITE_URL } from "@/data/site";
 import "./globals.css";
 
 const interTight = Inter_Tight({
@@ -9,6 +10,7 @@ const interTight = Inter_Tight({
 });
 
 export const metadata: Metadata = {
+  ...(SITE_URL && { metadataBase: new URL(SITE_URL), alternates: { canonical: "/" } }),
   title: "Aadhi Consulting Services | Job Placement & HR Consultancy in Mangalore",
   description:
     "Job placement consultancy in Moodbidri, Mangalore. Jobs in India and abroad, HR services for employers, training, career guidance and visa application support.",
@@ -29,6 +31,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_IN",
     siteName: "Aadhi Consulting Services",
+    ...(SITE_URL && { url: "/" }),
   },
 };
 

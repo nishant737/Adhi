@@ -13,7 +13,9 @@ import Solutions from "@/components/Solutions";
 import Stats from "@/components/Stats";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { contact } from "@/data/contact";
+import { SITE_URL } from "@/data/site";
 import { faqs } from "@/data/faqs";
+import { getOpenings } from "@/data/sheet";
 
 // Structured data so search engines and AI assistants can read the business details and FAQs directly
 const jsonLd = [
@@ -25,13 +27,14 @@ const jsonLd = [
       "Job placement and HR consultancy offering job placement in India and abroad, HR services, training, career guidance and visa application support.",
     telephone: contact.phones,
     email: contact.email,
+    ...(SITE_URL && { url: SITE_URL }),
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Canara Trade Centre, First Floor, Door No 5-106-72/73/82/83, Near Market",
-      addressLocality: "Moodbidri, Mangalore",
-      addressRegion: "Karnataka",
-      postalCode: "574227",
-      addressCountry: "IN",
+      streetAddress: contact.addressParts.street,
+      addressLocality: contact.addressParts.locality,
+      addressRegion: contact.addressParts.region,
+      postalCode: contact.addressParts.postalCode,
+      addressCountry: contact.addressParts.country,
     },
     areaServed: ["India", "Worldwide"],
     knowsAbout: ["Job placement", "Overseas jobs", "HR services", "Recruitment", "Career guidance", "Training", "Visa application"],
@@ -55,7 +58,9 @@ const jsonLd = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const openings = await getOpenings();
+
   return (
     <>
       {/* One standard JSON-LD block per entity, each with its own @context */}
@@ -75,7 +80,7 @@ export default function Home() {
         <Solutions />
         <Manpower />
         <Stats />
-        <Careers />
+        <Careers jobs={openings} />
         <Faculty />
         <Reviews />
         <FAQ />

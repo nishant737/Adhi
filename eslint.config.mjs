@@ -7,6 +7,8 @@ const eslintConfig = defineConfig([
   ...nextTs,
   // Override default ignores of eslint-config-next.
   globalIgnores([
+    // Google Apps Script, runs in Google's editor, not in this app
+    "docs/**",
     // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",
