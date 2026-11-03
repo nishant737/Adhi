@@ -1,4 +1,5 @@
 import About from "@/components/About";
+import Careers from "@/components/Careers";
 import Contact from "@/components/Contact";
 import FAQ from "@/components/FAQ";
 import Faculty from "@/components/Faculty";
@@ -74,6 +75,7 @@ export default function Home() {
         <Solutions />
         <Manpower />
         <Stats />
+        <Careers />
         <Faculty />
         <Reviews />
         <FAQ />
