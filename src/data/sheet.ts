@@ -5,7 +5,7 @@ import { jobs as fallbackJobs, type Job } from "./jobs";
 export const SHEET_URL = process.env.NEXT_PUBLIC_SHEET_URL ?? "";
 
 export type SheetPayload = {
-  kind: "application" | "request";
+  kind: "application" | "request" | "enquiry";
   name: string;
   phone: string;
   email?: string;
@@ -13,6 +13,10 @@ export type SheetPayload = {
   location?: string;
   experience?: string;
   preferredLocation?: string;
+  company?: string;
+  service?: string;
+  positions?: string;
+  message?: string;
   cv?: { name: string; type: string; base64: string };
 };
 

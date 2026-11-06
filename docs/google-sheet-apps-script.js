@@ -2,7 +2,7 @@
  * Aadhi Careers — Google Apps Script
  *
  * Paste this into the Google Sheet: Extensions → Apps Script. Then:
- *   1. Run `setup` once (pick it in the toolbar and press Run) to create the two tabs.
+ *   1. Run `setup` once (pick it in the toolbar and press Run) to create the tabs.
  *   2. Deploy → New deployment → Web app. Execute as: Me. Who has access: Anyone.
  *   3. Copy the Web app URL and set it as NEXT_PUBLIC_SHEET_URL in Vercel.
  *
@@ -11,6 +11,7 @@
 
 const APPLICATIONS = "Applications";
 const OPENINGS = "Openings";
+const ENQUIRIES = "Enquiries";
 const CV_FOLDER = "Aadhi CVs";
 const MAX_BYTES = 5 * 1024 * 1024; // 5 MB
 const CV_TYPES = [
@@ -18,15 +19,17 @@ const CV_TYPES = [
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
-const MAX_TEXT = 200; // longest value kept per cell
+const MAX_TEXT = 1000; // longest value kept per cell
 
 const APPLICATION_HEADERS = ["Date", "Type", "Role", "Location", "Name", "Phone", "Email", "Experience", "Preferred location", "CV"];
+const ENQUIRY_HEADERS = ["Date", "Company", "Name", "Phone", "Email", "Service", "Positions", "Requirements"];
 const OPENING_HEADERS = ["Title", "Location", "Region", "Type", "Experience", "Salary", "Active"];
 
 // Creates both tabs with headers (safe to run again; it never deletes data).
 function setup() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   ensureSheet(ss, APPLICATIONS, APPLICATION_HEADERS);
+  ensureSheet(ss, ENQUIRIES, ENQUIRY_HEADERS);
   const openings = ensureSheet(ss, OPENINGS, OPENING_HEADERS);
   if (openings.getLastRow() === 1) {
     openings.getRange(2, 1, 6, OPENING_HEADERS.length).setValues([
@@ -59,6 +62,16 @@ function doPost(e) {
     const d = JSON.parse(e.postData.contents);
     if (!clean(d.name) || !clean(d.phone)) return reply({ ok: false, error: "Name and phone are required" });
     const ss = SpreadsheetApp.getActiveSpreadsheet();
+
+    // Business enquiries from the Contact section have their own tab
+    if (d.kind === "enquiry") {
+      ensureSheet(ss, ENQUIRIES, ENQUIRY_HEADERS).appendRow([
+        new Date(),
+        ...[d.company, d.name, d.phone, d.email, d.service, d.positions, d.message].map(cell),
+      ]);
+      return reply({ ok: true });
+    }
+
     const sheet = ensureSheet(ss, APPLICATIONS, APPLICATION_HEADERS);
 
     let cv = "";

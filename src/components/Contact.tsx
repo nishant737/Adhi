@@ -1,28 +1,49 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { contact, telHref, whatsappLink } from "@/data/contact";
+import { contact, telHref } from "@/data/contact";
+import { HONEYPOT, SHEET_URL, sendToSheet } from "@/data/sheet";
 import Reveal from "./Reveal";
 
-const interests = ["Job Abroad", "Job in India", "Visa & Emigration", "Language Training"];
+// What a business can ask about. Job seekers are pointed to the Careers section instead.
+const services = ["Hiring / Recruitment", "Overseas Manpower", "Payroll Management", "Other"];
+const teamSizes = ["1 – 5", "6 – 20", "21 – 50", "50+"];
+
+type Status = "idle" | "sending" | "sent" | "error" | "unavailable";
 
 export default function Contact() {
-  const [interest, setInterest] = useState(interests[0]);
-  const [sent, setSent] = useState(false);
+  const [service, setService] = useState(services[0]);
+  const [status, setStatus] = useState<Status>("idle");
 
-  // No server needed: the enquiry opens in WhatsApp, ready to send
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  // Business enquiries are saved to the client's Google Sheet ("Enquiries" tab).
+  // They are not sent to WhatsApp; the destination can be changed here later.
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    const lines = [
-      "Hello Aadhi Consulting, I'd like to know more.",
-      `Name: ${data.get("name")}`,
-      `Phone: ${data.get("phone")}`,
-      `Interested in: ${interest}`,
-      data.get("message") ? `Message: ${data.get("message")}` : "",
-    ];
-    window.open(whatsappLink(lines), "_blank", "noopener");
-    setSent(true);
+    if (data.get(HONEYPOT)) {
+      setStatus("sent");
+      return;
+    }
+    if (!SHEET_URL) {
+      setStatus("unavailable");
+      return;
+    }
+    setStatus("sending");
+    try {
+      await sendToSheet({
+        kind: "enquiry",
+        company: String(data.get("company")),
+        name: String(data.get("name")),
+        email: String(data.get("email")),
+        phone: String(data.get("phone")),
+        service,
+        positions: String(data.get("positions") || ""),
+        message: String(data.get("message") || ""),
+      });
+      setStatus("sent");
+    } catch {
+      setStatus("error");
+    }
   };
 
   const details = [
@@ -55,10 +76,15 @@ export default function Contact() {
               Contact Us
             </span>
             <h2 className="mt-5 text-[2.1rem] font-medium leading-[1.02] tracking-[-0.04em] sm:mt-6 sm:text-6xl lg:text-[4rem]">
-              Let&apos;s find your <span className="block text-[#3f74b5]">next job together.</span>
+              Let&apos;s build <span className="block text-[#3f74b5]">your team together.</span>
             </h2>
             <p className="mt-6 max-w-md text-[0.95rem] leading-relaxed text-[#0d2142]/60 sm:text-lg">
-              Tell us a little about yourself and we&apos;ll get back to you with the next steps.
+              Hiring staff in India or abroad? Tell us what you need and our team will get back to you.
+              Looking for a job?{" "}
+              <a href="#careers" className="font-medium text-[#0d2142] underline decoration-[#3f74b5]/40 underline-offset-4 hover:decoration-[#3f74b5]">
+                See open roles
+              </a>
+              .
             </p>
 
             <ul className="mt-10 grid gap-3 sm:grid-cols-2">
@@ -95,37 +121,48 @@ export default function Contact() {
           {/* Right: form */}
           <Reveal delay={150}>
             <div className="rounded-[1.75rem] bg-gradient-to-br from-[#0b1a33] via-[#10275a] to-[#1d4196] p-6 text-white shadow-[0_30px_80px_rgba(13,33,66,0.25)] sm:p-10">
-              {sent ? (
+              {status === "sent" ? (
                 <div className="animate-bubble flex min-h-[26rem] flex-col items-center justify-center text-center">
                   <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white text-[#1f8a5b]">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                       <path d="M5 12l5 5L20 7" />
                     </svg>
                   </span>
-                  <h3 className="mt-6 text-2xl font-medium tracking-tight">Almost there!</h3>
-                  <p className="mt-2 max-w-xs text-white/65">Your message is ready in WhatsApp. Just press send and we&apos;ll get back to you.</p>
-                  <button type="button" onClick={() => setSent(false)} className="mt-8 text-sm font-medium text-white/70 underline underline-offset-4 hover:text-white">
+                  <h3 className="mt-6 text-2xl font-medium tracking-tight">Thank you!</h3>
+                  <p className="mt-2 max-w-xs text-white/65">We&apos;ve received your enquiry and our team will contact you shortly.</p>
+                  <button type="button" onClick={() => setStatus("idle")} className="mt-8 text-sm font-medium text-white/70 underline underline-offset-4 hover:text-white">
                     Send another enquiry
                   </button>
                 </div>
               ) : (
                 <form onSubmit={onSubmit} className="flex flex-col gap-5">
-                  <h3 className="text-2xl font-medium tracking-tight">Send us an enquiry</h3>
+                  <div>
+                    <span className="inline-flex rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/80">For businesses</span>
+                    <h3 className="mt-3 text-2xl font-medium tracking-tight">Send us an enquiry</h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-white/60">
+                      For companies looking to hire. Job seekers, please{" "}
+                      <a href="#careers" className="font-medium text-white underline underline-offset-4">apply through Careers</a>.
+                    </p>
+                  </div>
 
-                  <Field label="Full name" name="name" placeholder="Your name" autoComplete="name" />
-                  <Field label="Phone number" name="phone" type="tel" placeholder="+91" autoComplete="tel" />
+                  <Field label="Company name" name="company" placeholder="Your company" autoComplete="organization" />
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <Field label="Your name" name="name" placeholder="Contact person" autoComplete="name" />
+                    <Field label="Phone number" name="phone" type="tel" placeholder="+91" autoComplete="tel" />
+                  </div>
+                  <Field label="Work email" name="email" type="email" placeholder="you@company.com" autoComplete="email" />
 
                   <fieldset>
-                    <legend className="text-sm text-white/60">I&apos;m interested in</legend>
+                    <legend className="text-sm text-white/60">We need help with</legend>
                     <div className="mt-2 flex flex-wrap gap-2">
-                      {interests.map((opt) => (
+                      {services.map((opt) => (
                         <button
                           key={opt}
                           type="button"
-                          aria-pressed={interest === opt}
-                          onClick={() => setInterest(opt)}
+                          aria-pressed={service === opt}
+                          onClick={() => setService(opt)}
                           className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-300 ${
-                            interest === opt ? "border-white bg-white text-[#0d2142]" : "border-white/20 text-white/80 hover:border-white/50"
+                            service === opt ? "border-white bg-white text-[#0d2142]" : "border-white/20 text-white/80 hover:border-white/50"
                           }`}
                         >
                           {opt}
@@ -135,23 +172,49 @@ export default function Contact() {
                   </fieldset>
 
                   <label className="block">
-                    <span className="text-sm text-white/60">Message (optional)</span>
+                    <span className="text-sm text-white/60">Number of positions (optional)</span>
+                    <select name="positions" defaultValue="" className={`${inputClass} appearance-none`}>
+                      <option value="" className="text-[#0d2142]">Select</option>
+                      {teamSizes.map((t) => (
+                        <option key={t} value={t} className="text-[#0d2142]">{t}</option>
+                      ))}
+                    </select>
+                  </label>
+
+                  <label className="block">
+                    <span className="text-sm text-white/60">Requirements (optional)</span>
                     <textarea
                       name="message"
                       rows={3}
-                      placeholder="Your profession, experience and preferred country"
-                      className="mt-2 w-full resize-none rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-white placeholder:text-white/35 outline-none transition-colors focus:border-white/60 focus:bg-white/10"
+                      maxLength={1000}
+                      placeholder="Roles, locations and when you need them"
+                      className={`${inputClass} resize-none`}
                     />
                   </label>
 
+                  {/* Spam trap: hidden from people, bots fill it in */}
+                  <input type="text" name={HONEYPOT} tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
+
+                  {(status === "error" || status === "unavailable") && (
+                    <div role="alert" className="rounded-xl bg-white/10 p-4 text-sm text-white/85">
+                      <p className="font-medium text-white">
+                        {status === "error" ? "We couldn't send your enquiry right now." : "Online enquiries aren't open yet."}
+                      </p>
+                      <p className="mt-1">
+                        Please call{" "}
+                        <a href={telHref(contact.phones[0])} className="font-medium underline underline-offset-4">{contact.phones[0]}</a>{" "}
+                        or email{" "}
+                        <a href={`mailto:${contact.email}`} className="break-all font-medium underline underline-offset-4">{contact.email}</a>.
+                      </p>
+                    </div>
+                  )}
+
                   <button
                     type="submit"
-                    className="group mt-2 flex items-center justify-center gap-2 rounded-full bg-white px-6 py-4 font-medium text-[#0d2142] transition-colors hover:bg-[#e6ecfa]"
+                    disabled={status === "sending"}
+                    className="group mt-2 flex items-center justify-center gap-2 rounded-full bg-white px-6 py-4 font-medium text-[#0d2142] transition-colors hover:bg-[#e6ecfa] disabled:cursor-wait disabled:opacity-80"
                   >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden className="text-[#1f8a5b]">
-                      <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.4-.7-2.9-1.1-4.7-4.1-4.8-4.3-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.3.5-.4.5c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.7-.1l2 .9c.3.2.5.2.6.4.1.1.1.7-.1 1.3Z" />
-                    </svg>
-                    Send via WhatsApp
+                    {status === "sending" ? "Sending…" : "Send enquiry"}
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-300 group-hover:translate-x-1" aria-hidden>
                       <path d="M5 12h14M13 6l6 6-6 6" />
                     </svg>
@@ -166,15 +229,14 @@ export default function Contact() {
   );
 }
 
+const inputClass =
+  "mt-2 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-white placeholder:text-white/35 outline-none transition-colors focus:border-white/60 focus:bg-white/10";
+
 function Field({ label, ...props }: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <label className="block">
       <span className="text-sm text-white/60">{label}</span>
-      <input
-        required
-        {...props}
-        className="mt-2 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-white placeholder:text-white/35 outline-none transition-colors focus:border-white/60 focus:bg-white/10"
-      />
+      <input required maxLength={200} {...props} className={inputClass} />
     </label>
   );
 }
