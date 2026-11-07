@@ -2,7 +2,21 @@
 
 import { useState, type FormEvent } from "react";
 import { contact, telHref } from "@/data/contact";
+import { countryCodes, type CountryCode } from "@/data/countryCodes";
 import { HONEYPOT, SHEET_URL, sendToSheet } from "@/data/sheet";
+import {
+  cleanCompany,
+  cleanEmail,
+  cleanMessage,
+  cleanPhone,
+  cleanWords,
+  companyError,
+  emailError,
+  messageError,
+  phoneError,
+  wordsError,
+} from "@/data/validation";
+import { PhoneField, TextArea, TextField, inputClass } from "./FormFields";
 import Reveal from "./Reveal";
 
 // What a business can ask about. Job seekers are pointed to the Careers section instead.
@@ -10,18 +24,50 @@ const services = ["Hiring / Recruitment", "Overseas Manpower", "Payroll Manageme
 const teamSizes = ["1 – 5", "6 – 20", "21 – 50", "50+"];
 
 type Status = "idle" | "sending" | "sent" | "error" | "unavailable";
+type FieldKey = "company" | "name" | "phone" | "email" | "message";
+const empty: Record<FieldKey, string> = { company: "", name: "", phone: "", email: "", message: "" };
 
 export default function Contact() {
   const [service, setService] = useState(services[0]);
   const [status, setStatus] = useState<Status>("idle");
+  const [values, setValues] = useState(empty);
+  const [country, setCountry] = useState<CountryCode>(countryCodes[0]);
+  const [touched, setTouched] = useState<Partial<Record<FieldKey, boolean>>>({});
+  const [submitted, setSubmitted] = useState(false);
+
+  const errors: Record<FieldKey, string> = {
+    company: companyError(values.company),
+    name: wordsError(values.name, "Name"),
+    phone: phoneError(values.phone, country),
+    email: emailError(values.email),
+    message: messageError(values.message, "Requirements"),
+  };
+  const show = (key: FieldKey) => ((submitted || touched[key]) && errors[key]) || "";
+  const set = (key: FieldKey, value: string) => setValues((v) => ({ ...v, [key]: value }));
+  const blur = (key: FieldKey) => () => setTouched((t) => ({ ...t, [key]: true }));
+
+  const reset = () => {
+    setValues(empty);
+    setTouched({});
+    setSubmitted(false);
+    setStatus("idle");
+  };
 
   // Business enquiries are saved to the client's Google Sheet ("Enquiries" tab).
   // They are not sent to WhatsApp; the destination can be changed here later.
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    if (status === "sending") return;
     if (data.get(HONEYPOT)) {
       setStatus("sent");
+      return;
+    }
+    setSubmitted(true);
+    const firstBad = (Object.keys(errors) as FieldKey[]).find((k) => errors[k]);
+    if (firstBad) {
+      form.querySelector<HTMLElement>(`[name="${firstBad}"]`)?.focus();
       return;
     }
     if (!SHEET_URL) {
@@ -32,13 +78,13 @@ export default function Contact() {
     try {
       await sendToSheet({
         kind: "enquiry",
-        company: String(data.get("company")),
-        name: String(data.get("name")),
-        email: String(data.get("email")),
-        phone: String(data.get("phone")),
+        company: values.company.trim(),
+        name: values.name.trim(),
+        email: values.email.trim(),
+        phone: `${country.dial} ${values.phone}`,
         service,
         positions: String(data.get("positions") || ""),
-        message: String(data.get("message") || ""),
+        message: values.message.trim(),
       });
       setStatus("sent");
     } catch {
@@ -130,12 +176,12 @@ export default function Contact() {
                   </span>
                   <h3 className="mt-6 text-2xl font-medium tracking-tight">Thank you!</h3>
                   <p className="mt-2 max-w-xs text-white/65">We&apos;ve received your enquiry and our team will contact you shortly.</p>
-                  <button type="button" onClick={() => setStatus("idle")} className="mt-8 text-sm font-medium text-white/70 underline underline-offset-4 hover:text-white">
+                  <button type="button" onClick={reset} className="mt-8 text-sm font-medium text-white/70 underline underline-offset-4 hover:text-white">
                     Send another enquiry
                   </button>
                 </div>
               ) : (
-                <form onSubmit={onSubmit} className="flex flex-col gap-5">
+                <form onSubmit={onSubmit} noValidate className="flex flex-col gap-5">
                   <div>
                     <span className="inline-flex rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/80">For businesses</span>
                     <h3 className="mt-3 text-2xl font-medium tracking-tight">Send us an enquiry</h3>
@@ -145,12 +191,51 @@ export default function Contact() {
                     </p>
                   </div>
 
-                  <Field label="Company name" name="company" placeholder="Your company" autoComplete="organization" />
+                  <TextField
+                    label="Company name"
+                    name="company"
+                    placeholder="Your company"
+                    autoComplete="organization"
+                    value={values.company}
+                    onChange={(e) => set("company", cleanCompany(e.target.value))}
+                    onBlur={blur("company")}
+                    error={show("company")}
+                  />
                   <div className="grid gap-5 sm:grid-cols-2">
-                    <Field label="Your name" name="name" placeholder="Contact person" autoComplete="name" />
-                    <Field label="Phone number" name="phone" type="tel" placeholder="+91" autoComplete="tel" />
+                    <TextField
+                      label="Your name"
+                      name="name"
+                      placeholder="Contact person"
+                      autoComplete="name"
+                      value={values.name}
+                      onChange={(e) => set("name", cleanWords(e.target.value))}
+                      onBlur={blur("name")}
+                      error={show("name")}
+                    />
+                    <PhoneField
+                      country={country}
+                      onCountry={(c) => {
+                        setCountry(c);
+                        set("phone", values.phone.slice(0, c.max));
+                      }}
+                      value={values.phone}
+                      onChange={(v) => set("phone", cleanPhone(v, country))}
+                      onBlur={blur("phone")}
+                      error={show("phone")}
+                    />
                   </div>
-                  <Field label="Work email" name="email" type="email" placeholder="you@company.com" autoComplete="email" />
+                  <TextField
+                    label="Work email"
+                    name="email"
+                    type="email"
+                    inputMode="email"
+                    placeholder="you@company.com"
+                    autoComplete="email"
+                    value={values.email}
+                    onChange={(e) => set("email", cleanEmail(e.target.value))}
+                    onBlur={blur("email")}
+                    error={show("email")}
+                  />
 
                   <fieldset>
                     <legend className="text-sm text-white/60">We need help with</legend>
@@ -181,16 +266,17 @@ export default function Contact() {
                     </select>
                   </label>
 
-                  <label className="block">
-                    <span className="text-sm text-white/60">Requirements (optional)</span>
-                    <textarea
-                      name="message"
-                      rows={3}
-                      maxLength={1000}
-                      placeholder="Roles, locations and when you need them"
-                      className={`${inputClass} resize-none`}
-                    />
-                  </label>
+                  <TextArea
+                    label="Requirements (optional)"
+                    name="message"
+                    rows={3}
+                    maxLength={1000}
+                    placeholder="Roles, locations and when you need them"
+                    value={values.message}
+                    onChange={(e) => set("message", cleanMessage(e.target.value))}
+                    onBlur={blur("message")}
+                    error={show("message")}
+                  />
 
                   {/* Spam trap: hidden from people, bots fill it in */}
                   <input type="text" name={HONEYPOT} tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
@@ -226,17 +312,5 @@ export default function Contact() {
         </div>
       </div>
     </section>
-  );
-}
-
-const inputClass =
-  "mt-2 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-white placeholder:text-white/35 outline-none transition-colors focus:border-white/60 focus:bg-white/10";
-
-function Field({ label, ...props }: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) {
-  return (
-    <label className="block">
-      <span className="text-sm text-white/60">{label}</span>
-      <input required maxLength={200} {...props} className={inputClass} />
-    </label>
   );
 }

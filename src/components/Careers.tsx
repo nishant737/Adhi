@@ -1,19 +1,17 @@
 "use client";
 
 import { useState, type FormEvent, type ReactNode } from "react";
-import { whatsappLink } from "@/data/contact";
+import { countryCodes, type CountryCode } from "@/data/countryCodes";
+import { cleanPhone, cleanWords, phoneError, wordsError } from "@/data/validation";
+import { contact, telHref } from "@/data/contact";
 import { experienceOptions, locationOptions, type Job } from "@/data/jobs";
 import { HONEYPOT, SHEET_URL, sendToSheet } from "@/data/sheet";
 import ApplyModal from "./ApplyModal";
+import { FieldError, PhoneField, TextField, errorBorder, inputClass } from "./FormFields";
 import Reveal from "./Reveal";
 
 const filters = ["All", "India", "Abroad"] as const;
 type Filter = (typeof filters)[number];
-
-// No server needed: applications open in WhatsApp, ready to send
-function sendToWhatsApp(lines: string[]) {
-  window.open(whatsappLink(lines), "_blank", "noopener");
-}
 
 export default function Careers({ jobs }: { jobs: Job[] }) {
   const [filter, setFilter] = useState<Filter>("All");
@@ -127,38 +125,71 @@ function Meta({ icon, children }: { icon: ReactNode; children: ReactNode }) {
   );
 }
 
+type FieldKey = "name" | "phone" | "role" | "experience" | "otherLocation";
+
 function JobRequestForm() {
   const [location, setLocation] = useState(locationOptions[0]);
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error" | "unavailable">("idle");
+  const sent = status === "sent";
+  const [values, setValues] = useState({ name: "", phone: "", role: "", experience: "", otherLocation: "" });
+  const [country, setCountry] = useState<CountryCode>(countryCodes[0]);
+  const [touched, setTouched] = useState<Partial<Record<FieldKey, boolean>>>({});
+  const [submitted, setSubmitted] = useState(false);
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const errors: Record<FieldKey, string> = {
+    name: wordsError(values.name, "Name"),
+    phone: phoneError(values.phone, country),
+    role: wordsError(values.role, "Job title"),
+    experience: values.experience ? "" : "Select your experience",
+    otherLocation: location === "Other" ? wordsError(values.otherLocation, "Location") : "",
+  };
+  const show = (key: FieldKey) => ((submitted || touched[key]) && errors[key]) || "";
+  const set = (key: FieldKey, value: string) => setValues((v) => ({ ...v, [key]: value }));
+  const blur = (key: FieldKey) => () => setTouched((t) => ({ ...t, [key]: true }));
+
+  const pickCountry = (c: CountryCode) => {
+    setCountry(c);
+    set("phone", values.phone.slice(0, c.max));
+  };
+
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    if (status === "sending") return;
     if (data.get(HONEYPOT)) {
-      setSent(true);
+      setStatus("sent");
       return;
     }
-    const place = String(location === "Other" ? data.get("otherLocation") : location);
-    // Also saved as a row in the client's Google Sheet (no-op until it's connected)
-    if (SHEET_URL) {
-      sendToSheet({
-        kind: "request",
-        name: String(data.get("name")),
-        phone: String(data.get("phone")),
-        role: String(data.get("role")),
-        experience: String(data.get("experience")),
-        preferredLocation: place,
-      }).catch(() => {});
+    setSubmitted(true);
+    const firstBad = (Object.keys(errors) as FieldKey[]).find((k) => errors[k]);
+    if (firstBad) {
+      form.querySelector<HTMLElement>(`[name="${firstBad}"]`)?.focus();
+      return;
     }
-    sendToWhatsApp([
-      "Hello Aadhi Consulting, I'm looking for a job.",
-      `Name: ${data.get("name")}`,
-      `Phone: ${data.get("phone")}`,
-      `Job I'm targeting: ${data.get("role")}`,
-      `Experience: ${data.get("experience")}`,
-      `Preferred location: ${place}`,
-    ]);
-    setSent(true);
+    const name = values.name.trim();
+    const role = values.role.trim();
+    const phone = `${country.dial} ${values.phone}`;
+    const place = location === "Other" ? values.otherLocation.trim() : location;
+    // Saved as a row in the client's Google Sheet
+    if (!SHEET_URL) {
+      setStatus("unavailable");
+      return;
+    }
+    setStatus("sending");
+    try {
+      await sendToSheet({ kind: "request", name, phone, role, experience: values.experience, preferredLocation: place });
+      setStatus("sent");
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  const reset = () => {
+    setValues({ name: "", phone: "", role: "", experience: "", otherLocation: "" });
+    setTouched({});
+    setSubmitted(false);
+    setStatus("idle");
   };
 
   return (
@@ -170,35 +201,67 @@ function JobRequestForm() {
               <path d="M5 12l5 5L20 7" />
             </svg>
           </span>
-          <h3 className="mt-5 text-2xl font-medium tracking-tight">Almost there!</h3>
-          <p className="mt-2 max-w-xs text-white/65">Your details are ready in WhatsApp. Just press send and we&apos;ll get back to you.</p>
-          <button type="button" onClick={() => setSent(false)} className="mt-6 text-sm font-medium text-white/70 underline underline-offset-4 hover:text-white">
+          <h3 className="mt-5 text-2xl font-medium tracking-tight">Thank you!</h3>
+          <p className="mt-2 max-w-xs text-white/65">We&apos;ve received your details and will reach out when we find a matching role.</p>
+          <button type="button" onClick={reset} className="mt-6 text-sm font-medium text-white/70 underline underline-offset-4 hover:text-white">
             Send another request
           </button>
         </div>
       ) : (
-        <form onSubmit={onSubmit} className="flex flex-col gap-4">
+        <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4">
           <div>
             <h3 className="text-2xl font-medium tracking-tight">Didn&apos;t find your role?</h3>
             <p className="mt-1.5 text-sm leading-relaxed text-white/60">Tell us what you&apos;re looking for and we&apos;ll reach out when we find a match.</p>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-            <TextField label="Full name" name="name" placeholder="Your name" autoComplete="name" />
-            <TextField label="Phone number" name="phone" type="tel" placeholder="+91" autoComplete="tel" />
+            <TextField
+              label="Full name"
+              name="name"
+              placeholder="Your name"
+              autoComplete="name"
+              value={values.name}
+              onChange={(e) => set("name", cleanWords(e.target.value))}
+              onBlur={blur("name")}
+              error={show("name")}
+            />
+            <PhoneField
+              country={country}
+              onCountry={pickCountry}
+              value={values.phone}
+              onChange={(v) => set("phone", cleanPhone(v, country))}
+              onBlur={blur("phone")}
+              error={show("phone")}
+            />
           </div>
           {/* Spam trap: hidden from people, bots fill it in */}
           <input type="text" name={HONEYPOT} tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
-          <TextField label="Job you're targeting" name="role" placeholder="e.g. Electrician, Staff Nurse, Accountant" />
+          <TextField
+            label="Job you're targeting"
+            name="role"
+            placeholder="e.g. Electrician, Staff Nurse, Accountant"
+            value={values.role}
+            onChange={(e) => set("role", cleanWords(e.target.value))}
+            onBlur={blur("role")}
+            error={show("role")}
+          />
 
           <label className="block">
             <span className="text-sm text-white/60">Years of experience</span>
-            <select name="experience" required defaultValue="" className={`${inputClass} appearance-none`}>
+            <select
+              name="experience"
+              value={values.experience}
+              onChange={(e) => set("experience", e.target.value)}
+              onBlur={blur("experience")}
+              aria-invalid={!!show("experience")}
+              className={`${inputClass} appearance-none ${show("experience") ? errorBorder : ""}`}
+            >
               <option value="" disabled className="text-[#0d2142]">Select</option>
               {experienceOptions.map((opt) => (
                 <option key={opt} value={opt} className="text-[#0d2142]">{opt}</option>
               ))}
             </select>
+            <FieldError message={show("experience")} />
           </label>
 
           <fieldset>
@@ -221,11 +284,35 @@ function JobRequestForm() {
           </fieldset>
 
           {location === "Other" && (
-            <TextField label="Which location?" name="otherLocation" placeholder="City or country" />
+            <TextField
+              label="Which location?"
+              name="otherLocation"
+              placeholder="City or country"
+              value={values.otherLocation}
+              onChange={(e) => set("otherLocation", cleanWords(e.target.value))}
+              onBlur={blur("otherLocation")}
+              error={show("otherLocation")}
+            />
           )}
 
-          <button type="submit" className="group mt-1 flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 font-medium text-[#0d2142] transition-colors hover:bg-[#e6ecfa]">
-            Send via WhatsApp
+          {(status === "error" || status === "unavailable") && (
+            <div role="alert" className="rounded-xl bg-white/10 p-4 text-sm text-white/85">
+              <p className="font-medium text-white">
+                {status === "error" ? "We couldn't submit your details right now." : "Online requests aren't open yet."}
+              </p>
+              <p className="mt-1">
+                Please try again or call{" "}
+                <a href={telHref(contact.phones[0])} className="font-medium underline underline-offset-4">{contact.phones[0]}</a>.
+              </p>
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={status === "sending"}
+            className="group mt-1 flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 font-medium text-[#0d2142] transition-colors hover:bg-[#e6ecfa] disabled:cursor-wait disabled:opacity-80"
+          >
+            {status === "sending" ? "Submitting…" : "Submit"}
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-300 group-hover:translate-x-1" aria-hidden>
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>
@@ -233,17 +320,5 @@ function JobRequestForm() {
         </form>
       )}
     </div>
-  );
-}
-
-const inputClass =
-  "mt-2 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-white placeholder:text-white/35 outline-none transition-colors focus:border-white/60 focus:bg-white/10";
-
-function TextField({ label, ...props }: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) {
-  return (
-    <label className="block">
-      <span className="text-sm text-white/60">{label}</span>
-      <input required {...props} className={inputClass} />
-    </label>
   );
 }

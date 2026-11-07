@@ -8,9 +8,9 @@ const address = {
 };
 
 export const contact = {
-  phones: ["+91 99671 21288", "+91 91803 22517"],
+  phones: ["+91-9967121288"],
   whatsapp: "919967121288", // country code + number, digits only (used for wa.me links)
-  email: "info@aadhiconsultingservices.com",
+  email: "hr@aadhiconsultingservices.com",
   address: `${address.street}, ${address.locality} ${address.postalCode}`,
   addressParts: address,
   // PLACEHOLDERS — paste the real profile links (leave "" to hide an icon)
