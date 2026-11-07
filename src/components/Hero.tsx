@@ -1,9 +1,7 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { preload } from "react-dom";
-import HeroVideo from "./HeroVideo";
-
-const POSTER = "/videos/hero-v5-poster.jpg";
+import HeroVideo, { DESKTOP_MEDIA, HERO, MOBILE_MEDIA } from "./HeroVideo";
 
 // What Aadhi does, at a glance (swap in real numbers, e.g. "1,000+ placed", once the client confirms them)
 const stats = [
@@ -18,7 +16,9 @@ const reveal = (delayMs: number): CSSProperties => ({ animationDelay: `${delayMs
 
 export default function Hero() {
   // Fetch the first frame early so the intro starts on a sharp image, not a blank screen
-  preload(POSTER, { as: "image", fetchPriority: "high" });
+  // (only the one matching the screen size is fetched)
+  preload(HERO.mobile.poster, { as: "image", fetchPriority: "high", media: MOBILE_MEDIA });
+  preload(HERO.desktop.poster, { as: "image", fetchPriority: "high", media: DESKTOP_MEDIA });
 
   return (
     // Sticky: the video stays pinned while the next section slides up over it
@@ -27,7 +27,7 @@ export default function Hero() {
       <div className="absolute inset-0 overflow-hidden">
         <div className="hero-scroll absolute inset-0">
           {/* The reveal is pure CSS, so it starts on first paint instead of waiting for JavaScript */}
-          <HeroVideo poster={POSTER} />
+          <HeroVideo />
         </div>
       </div>
 
