@@ -49,7 +49,7 @@ export async function getOpenings(): Promise<Job[]> {
       title: j.title,
       location: j.location || "India",
       region: /abroad/i.test(j.region ?? "") ? "Abroad" : "India",
-      type: j.type || "Full-time",
+      type: j.type || "Full time",
       experience: j.experience || undefined,
       salary: j.salary || undefined,
     }));

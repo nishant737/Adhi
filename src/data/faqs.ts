@@ -26,7 +26,7 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: "Do you offer language training?",
-    a: "Yes. Depending on where you're going, you may need the local language for your job or visa. We offer language and job-readiness training for your destination country, for example German for those planning to work in Germany.",
+    a: "Yes. Depending on where you're going, you may need the local language for your job or visa. We offer language and job readiness training for your destination country, for example German for those planning to work in Germany.",
   },
   {
     q: "Where is Aadhi Consulting based?",

@@ -27,7 +27,7 @@ export default function Footer() {
               <Image src="/images/logo.png" alt="Aadhi Consulting Services" width={654} height={300} className="h-10 w-auto" />
             </Link>
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/60 md:mt-6">
-              A Mangaluru-based job placement consultancy helping people from India build careers abroad, with visa support and training for life abroad.
+              A job placement consultancy in Mangaluru, helping people from India build careers abroad, with visa support and training for life abroad.
             </p>
             <a
               href={whatsappHref}

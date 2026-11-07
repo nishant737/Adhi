@@ -111,7 +111,7 @@ export function PhoneField({
     }
   };
 
-  const digits = country.min === country.max ? `${country.max}` : `${country.min}–${country.max}`;
+  const digits = country.min === country.max ? `${country.max}` : `${country.min} to ${country.max}`;
 
   return (
     <div className="block">

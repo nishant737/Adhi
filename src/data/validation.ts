@@ -53,9 +53,9 @@ export const cleanPhone = (v: string, country: CountryCode) => v.replace(/\D/g, 
 
 export function phoneError(digits: string, country: CountryCode) {
   if (!digits) return "Phone number is required";
-  const need = country.min === country.max ? `${country.min}` : `${country.min}–${country.max}`;
+  const need = country.min === country.max ? `${country.min}` : `${country.min} to ${country.max}`;
   if (digits.length < country.min || digits.length > country.max)
-    return `Enter a ${need}-digit number for ${country.name}`;
+    return `Enter a ${need} digit number for ${country.name}`;
   if (country.iso === "IN" && !/^[6-9]/.test(digits)) return "Indian mobile numbers start with 6, 7, 8 or 9";
   if (/^(\d)\1+$/.test(digits)) return "Please enter a real phone number";
   return "";

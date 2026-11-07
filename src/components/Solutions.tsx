@@ -20,7 +20,7 @@ const solutions: Solution[] = [
   {
     title: "Payroll Management",
     tag: "For employers",
-    body: "Accurate, on-time payroll handled for your workforce, so you can focus on running your business.",
+    body: "Accurate payroll, handled on time for your workforce, so you can focus on running your business.",
     points: ["Salary processing", "Statutory compliance", "Payslips & records"],
     icon: (
       <>

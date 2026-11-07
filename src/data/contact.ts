@@ -8,7 +8,7 @@ const address = {
 };
 
 export const contact = {
-  phones: ["+91-9967121288"],
+  phones: ["+91 9967121288"],
   whatsapp: "919967121288", // country code + number, digits only (used for wa.me links)
   email: "hr@aadhiconsultingservices.com",
   address: `${address.street}, ${address.locality} ${address.postalCode}`,
@@ -16,7 +16,7 @@ export const contact = {
   // PLACEHOLDERS — paste the real profile links (leave "" to hide an icon)
   instagram: "https://www.instagram.com/",
   facebook: "https://www.facebook.com/",
-  hours: "Mon – Sat · 9:00 am – 5:00 pm",
+  hours: "Mon to Sat · 9:00 am to 5:00 pm",
 };
 
 export const telHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, "")}`;

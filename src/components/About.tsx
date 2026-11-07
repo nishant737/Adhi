@@ -16,7 +16,7 @@ const steps = [
   },
   {
     title: "Training, Guidance & Visas",
-    body: "We provide career guidance, job-readiness and language training, along with practical visa application support, helping candidates prepare confidently for their international career journey.",
+    body: "We provide career guidance, job readiness and language training, along with practical visa application support, helping candidates prepare confidently for their international career journey.",
     icon: CapIcon,
   },
 ];
@@ -98,7 +98,7 @@ export default function About() {
 
               <div className="mx-auto max-w-md space-y-3 text-[0.85rem] leading-relaxed text-white/70 sm:space-y-4 sm:text-lg lg:mx-0 lg:max-w-xl lg:space-y-3 lg:text-base max-lg:[@media(max-height:680px)]:hidden">
                 <p>
-                  Aadhi Consulting Services is a professional HR consulting firm offering tailored talent solutions, including permanent staffing and executive hiring. With an experienced team and technology-driven recruitment solutions, we connect businesses with the right talent while providing strategic workforce support that helps organizations grow and succeed.
+                  Aadhi Consulting Services is a professional HR consulting firm offering tailored talent solutions, including permanent staffing and executive hiring. With an experienced team and recruitment solutions powered by technology, we connect businesses with the right talent while providing strategic workforce support that helps organizations grow and succeed.
                 </p>
               </div>
             </div>

@@ -29,13 +29,13 @@ const services: { title: string; body: string; tags?: string[]; visual: () => Re
   },
   {
     title: "Visa & Emigration",
-    body: "Step-by-step help with visa stamping and the emigration process, for every destination.",
+    body: "Step by step help with visa stamping and the emigration process, for every destination.",
     tags: ["Visa stamping", "Emigration process"],
     visual: () => <VisaVisual />,
   },
   {
     title: "Language Training",
-    body: "Language and job-readiness training for your destination country, such as German for Germany.",
+    body: "Language and job readiness training for your destination country, such as German for Germany.",
     tags: ["Language training", "Job readiness", "Destination prep"],
     visual: () => <LanguageVisual />,
   },
@@ -371,7 +371,7 @@ function JobVisual() {
           </div>
 
           <div className="mt-3 flex gap-1.5 sm:mt-4">
-            {["Full-time", current.field].map((tag) => (
+            {["Full time", current.field].map((tag) => (
               <span key={tag} className="rounded-full bg-[#eef2fa] px-2.5 py-1 text-[0.65rem] font-medium text-[#0d2142]/70">
                 {tag}
               </span>

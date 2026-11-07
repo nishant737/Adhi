@@ -21,7 +21,7 @@ import Reveal from "./Reveal";
 
 // What a business can ask about. Job seekers are pointed to the Careers section instead.
 const services = ["Hiring / Recruitment", "Overseas Manpower", "Payroll Management", "Other"];
-const teamSizes = ["1 – 5", "6 – 20", "21 – 50", "50+"];
+const teamSizes = ["1 to 5", "6 to 20", "21 to 50", "50+"];
 
 type Status = "idle" | "sending" | "sent" | "error" | "unavailable";
 type FieldKey = "company" | "name" | "phone" | "email" | "message";
