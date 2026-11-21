@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter_Tight } from "next/font/google";
+import EventPopup from "@/components/EventPopup";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import SmoothScroll from "@/components/SmoothScroll";
@@ -50,6 +51,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {children}
         <Footer />
         <WhatsAppButton />
+        <EventPopup />
       </body>
     </html>
   );
