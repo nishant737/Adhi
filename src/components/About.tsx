@@ -40,12 +40,6 @@ export default function About() {
     const update = () => {
       frame = 0;
 
-      // Rounded top corners flatten as the section slides up to the top of the screen
-      const maxRadius = window.innerWidth >= 640 ? 48 : 32;
-      const top = section.getBoundingClientRect().top;
-      const radius = maxRadius * clamp01(top / (window.innerHeight * 0.5));
-      section.style.borderTopLeftRadius = section.style.borderTopRightRadius = `${radius}px`;
-
       // The section is pinned and the steps stay still; scrolling highlights them one by one,
       // and each step's line grows with the scroll
       const count = steps.length;
@@ -73,7 +67,7 @@ export default function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative z-10 overflow-clip rounded-t-[2rem] bg-gradient-to-br from-[#0b1a33] via-[#10275a] to-[#1d4196] text-white shadow-[0_-24px_60px_rgba(0,0,0,0.18)] sm:rounded-t-[3rem]"
+      className="relative z-10 overflow-clip bg-gradient-to-br from-[#0b1a33] via-[#10275a] to-[#1d4196] text-white"
     >
       {/* This tall track gives the pinned view room to scroll through the steps */}
       <div ref={trackRef} className="relative h-[280vh]">

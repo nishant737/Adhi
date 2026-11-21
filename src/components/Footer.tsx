@@ -5,16 +5,21 @@ import SocialLinks from "./SocialLinks";
 
 const links = [
   { label: "Home", href: "/" },
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Careers", href: "#careers" },
-  { label: "Team", href: "#team" },
-  { label: "Reviews", href: "#reviews" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
+  { label: "Jobs", href: "/careers" },
+  { label: "Contact Us", href: "/contact" },
+  { label: "Reviews", href: "/#reviews" },
+  { label: "FAQ", href: "/contact#faq" },
 ];
 
-const services = ["Overseas Job Placement", "Domestic Job Placement", "Visa & Emigration", "Language & Job Training"];
+const services = [
+  { label: "Overseas Job Placement", href: "/careers" },
+  { label: "Domestic Job Placement", href: "/careers" },
+  { label: "Visa & Emigration", href: "/services#services" },
+  { label: "Language & Job Training", href: "/services#services" },
+  { label: "Hiring & Payroll for Employers", href: "/services#employers" },
+];
 
 export default function Footer() {
   return (
@@ -53,18 +58,22 @@ export default function Footer() {
 
           <FooterList title="Services">
             {services.map((s) => (
-              <li key={s}>
-                <Link href="#services" className="text-white/70 transition-colors hover:text-white">
-                  {s}
+              <li key={s.label}>
+                <Link href={s.href} className="text-white/70 transition-colors hover:text-white">
+                  {s.label}
                 </Link>
               </li>
             ))}
           </FooterList>
 
           <FooterList title="Contact" className="col-span-2 border-t border-white/10 pt-8 md:col-span-1 md:border-0 md:pt-0">
-            {contact.phones.map((phone) => (
+            {[
+              { who: "Job seekers", phone: contact.candidatePhone },
+              ...contact.phones.map((phone) => ({ who: "Employers & general", phone })),
+            ].map(({ who, phone }) => (
               <ContactItem key={phone} icon={<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" />}>
                 <a href={telHref(phone)} className="transition-colors hover:text-white">
+                  <span className="block text-xs text-white/45">{who}</span>
                   {phone}
                 </a>
               </ContactItem>

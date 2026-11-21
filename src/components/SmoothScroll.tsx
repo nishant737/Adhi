@@ -1,6 +1,7 @@
 "use client";
 
 import Lenis from "lenis";
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 // One smooth-scroll instance for the whole page, so other components (e.g. the menu) can pause it
@@ -15,6 +16,17 @@ export const scrollToY = (y: number) => {
 };
 
 export default function SmoothScroll() {
+  const pathname = usePathname();
+
+  // A new page starts at the top (or at its #section), with Lenis measuring the new page height
+  useEffect(() => {
+    if (!lenis) return;
+    lenis.resize();
+    const target = window.location.hash && document.querySelector<HTMLElement>(window.location.hash);
+    if (target) lenis.scrollTo(target, { immediate: true, force: true });
+    else lenis.scrollTo(0, { immediate: true, force: true });
+  }, [pathname]);
+
   useEffect(() => {
     // Visitors who prefer reduced motion keep normal browser scrolling
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;

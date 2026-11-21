@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter_Tight } from "next/font/google";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 import SmoothScroll from "@/components/SmoothScroll";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { SITE_URL } from "@/data/site";
 import "./globals.css";
 
@@ -11,7 +14,10 @@ const interTight = Inter_Tight({
 
 export const metadata: Metadata = {
   ...(SITE_URL && { metadataBase: new URL(SITE_URL), alternates: { canonical: "/" } }),
-  title: "Aadhi Consulting Services | Job Placement & HR Consultancy in Mangalore",
+  title: {
+    default: "Aadhi Consulting Services | Job Placement & HR Consultancy in Mangalore",
+    template: "%s | Aadhi Consulting Services",
+  },
   description:
     "Job placement consultancy in Moodbidri, Mangalore. Jobs in India and abroad, HR services for employers, training, career guidance and visa application support.",
   keywords: [
@@ -40,7 +46,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${interTight.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <SmoothScroll />
+        <Navbar />
         {children}
+        <Footer />
+        <WhatsAppButton />
       </body>
     </html>
   );

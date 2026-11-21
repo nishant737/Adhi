@@ -34,6 +34,12 @@ export default function Careers({ jobs }: { jobs: Job[] }) {
           <p className="max-w-md text-[0.95rem] leading-relaxed text-[#0d2142]/60 sm:text-lg lg:justify-self-end lg:pb-1">
             Browse our current openings and apply in one tap. Looking for something else? Tell us
             what you want and we&apos;ll look for it.
+            <span className="mt-3 block text-[0.9rem] sm:text-base">
+              Questions about a job? Call{" "}
+              <a href={telHref(contact.candidatePhone)} className="whitespace-nowrap font-medium text-[#0d2142] underline decoration-[#3f74b5]/40 underline-offset-4 hover:decoration-[#3f74b5]">
+                {contact.candidatePhone}
+              </a>
+            </span>
           </p>
         </Reveal>
 
@@ -103,7 +109,7 @@ export default function Careers({ jobs }: { jobs: Job[] }) {
           </Reveal>
 
           {/* Anything else */}
-          <Reveal delay={120} className="lg:sticky lg:top-8">
+          <Reveal delay={120} className="lg:sticky lg:top-24">
             <JobRequestForm />
           </Reveal>
         </div>
@@ -193,7 +199,7 @@ function JobRequestForm() {
   };
 
   return (
-    <div className="rounded-[1.75rem] bg-gradient-to-br from-[#0b1a33] via-[#10275a] to-[#1d4196] p-6 text-white shadow-[0_30px_80px_rgba(13,33,66,0.2)] sm:p-8">
+    <div id="request" className="scroll-mt-24 rounded-[1.75rem] bg-gradient-to-br from-[#0b1a33] via-[#10275a] to-[#1d4196] p-6 text-white shadow-[0_30px_80px_rgba(13,33,66,0.2)] sm:p-8">
       {sent ? (
         <div className="animate-bubble flex min-h-[24rem] flex-col items-center justify-center text-center">
           <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-[#1f8a5b]">
@@ -302,7 +308,7 @@ function JobRequestForm() {
               </p>
               <p className="mt-1">
                 Please try again or call{" "}
-                <a href={telHref(contact.phones[0])} className="font-medium underline underline-offset-4">{contact.phones[0]}</a>.
+                <a href={telHref(contact.candidatePhone)} className="font-medium underline underline-offset-4">{contact.candidatePhone}</a>.
               </p>
             </div>
           )}

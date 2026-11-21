@@ -45,7 +45,7 @@ const solutions: Solution[] = [
 
 export default function Solutions() {
   return (
-    <section id="solutions" className="relative z-10 bg-[#f4f7fc] text-[#0d2142]">
+    <section id="employers" className="relative z-10 bg-[#f4f7fc] text-[#0d2142]">
       <div className="mx-auto max-w-7xl px-5 py-20 sm:px-10 sm:py-28">
         <Reveal className="grid gap-6 lg:grid-cols-[1.2fr_1fr] lg:items-end lg:gap-16">
           <div>

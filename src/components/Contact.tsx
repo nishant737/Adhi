@@ -98,8 +98,12 @@ export default function Contact() {
       // Each number is its own tap-to-call link, so the card itself isn't a link
       value: (
         <>
-          {contact.phones.map((phone) => (
+          {[
+            { who: "Job seekers", phone: contact.candidatePhone },
+            ...contact.phones.map((phone) => ({ who: "Employers & general", phone })),
+          ].map(({ who, phone }) => (
             <a key={phone} href={telHref(phone)} className="block transition-colors hover:text-[#3f74b5]">
+              <span className="block text-xs font-normal opacity-60">{who}</span>
               {phone}
             </a>
           ))}
@@ -127,7 +131,7 @@ export default function Contact() {
             <p className="mt-6 max-w-md text-[0.95rem] leading-relaxed text-[#0d2142]/60 sm:text-lg">
               Hiring staff in India or abroad? Tell us what you need and our team will get back to you.
               Looking for a job?{" "}
-              <a href="#careers" className="font-medium text-[#0d2142] underline decoration-[#3f74b5]/40 underline-offset-4 hover:decoration-[#3f74b5]">
+              <a href="/careers" className="font-medium text-[#0d2142] underline decoration-[#3f74b5]/40 underline-offset-4 hover:decoration-[#3f74b5]">
                 See open roles
               </a>
               .
@@ -187,7 +191,7 @@ export default function Contact() {
                     <h3 className="mt-3 text-2xl font-medium tracking-tight">Send us an enquiry</h3>
                     <p className="mt-1.5 text-sm leading-relaxed text-white/60">
                       For companies looking to hire. Job seekers, please{" "}
-                      <a href="#careers" className="font-medium text-white underline underline-offset-4">apply through Careers</a>.
+                      <a href="/careers" className="font-medium text-white underline underline-offset-4">apply through Careers</a>.
                     </p>
                   </div>
 

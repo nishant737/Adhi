@@ -112,6 +112,11 @@
   }
 }
 
+/* Jump links stop below the fixed header instead of under it */
+[id] {
+  scroll-margin-top: 4.5rem;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
