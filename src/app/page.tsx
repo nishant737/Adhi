@@ -13,7 +13,7 @@ const agency = {
   name: "Aadhi Consulting Services",
   description:
     "Job placement and HR consultancy offering job placement in India and abroad, HR services, training, career guidance and visa application support.",
-  telephone: [contact.candidatePhone, ...contact.phones],
+  telephone: contact.phones,
   email: contact.email,
   ...(SITE_URL && { url: SITE_URL }),
   address: {

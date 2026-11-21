@@ -36,8 +36,8 @@ export default function Careers({ jobs }: { jobs: Job[] }) {
             what you want and we&apos;ll look for it.
             <span className="mt-3 block text-[0.9rem] sm:text-base">
               Questions about a job? Call{" "}
-              <a href={telHref(contact.candidatePhone)} className="whitespace-nowrap font-medium text-[#0d2142] underline decoration-[#3f74b5]/40 underline-offset-4 hover:decoration-[#3f74b5]">
-                {contact.candidatePhone}
+              <a href={telHref(contact.phones[0])} className="whitespace-nowrap font-medium text-[#0d2142] underline decoration-[#3f74b5]/40 underline-offset-4 hover:decoration-[#3f74b5]">
+                {contact.phones[0]}
               </a>
             </span>
           </p>
@@ -308,7 +308,7 @@ function JobRequestForm() {
               </p>
               <p className="mt-1">
                 Please try again or call{" "}
-                <a href={telHref(contact.candidatePhone)} className="font-medium underline underline-offset-4">{contact.candidatePhone}</a>.
+                <a href={telHref(contact.phones[0])} className="font-medium underline underline-offset-4">{contact.phones[0]}</a>.
               </p>
             </div>
           )}

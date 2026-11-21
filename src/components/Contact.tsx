@@ -98,12 +98,8 @@ export default function Contact() {
       // Each number is its own tap-to-call link, so the card itself isn't a link
       value: (
         <>
-          {[
-            { who: "Job seekers", phone: contact.candidatePhone },
-            ...contact.phones.map((phone) => ({ who: "Employers & general", phone })),
-          ].map(({ who, phone }) => (
+          {contact.phones.map((phone) => (
             <a key={phone} href={telHref(phone)} className="block transition-colors hover:text-[#3f74b5]">
-              <span className="block text-xs font-normal opacity-60">{who}</span>
               {phone}
             </a>
           ))}

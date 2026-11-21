@@ -67,13 +67,9 @@ export default function Footer() {
           </FooterList>
 
           <FooterList title="Contact" className="col-span-2 border-t border-white/10 pt-8 md:col-span-1 md:border-0 md:pt-0">
-            {[
-              { who: "Job seekers", phone: contact.candidatePhone },
-              ...contact.phones.map((phone) => ({ who: "Employers & general", phone })),
-            ].map(({ who, phone }) => (
+            {contact.phones.map((phone) => (
               <ContactItem key={phone} icon={<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" />}>
                 <a href={telHref(phone)} className="transition-colors hover:text-white">
-                  <span className="block text-xs text-white/45">{who}</span>
                   {phone}
                 </a>
               </ContactItem>

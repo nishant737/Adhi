@@ -8,9 +8,8 @@ const address = {
 };
 
 export const contact = {
-  phones: ["+91 9967121288"], // office: employers and general enquiries
-  candidatePhone: "+91 91803 22517", // job seekers: questions about jobs and applications
-  whatsapp: "919967121288", // country code + number, digits only (used for wa.me links)
+  phones: ["+91 91803 22517"],
+  whatsapp: "919180322517", // country code + number, digits only (used for wa.me links)
   email: "hr@aadhiconsultingservices.com",
   address: `${address.street}, ${address.locality} ${address.postalCode}`,
   addressParts: address,
